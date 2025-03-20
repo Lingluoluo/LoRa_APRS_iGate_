@@ -5,14 +5,11 @@
             "password": "0d000721",
             "timeout": 10
         },
-        "AP": [{
-            "ssid": "RemoteRadio_2.4G",
-            "password": "0d000721"
-        }]
+        "AP": []
     },
     "beacon": {
-        "latitude": 126.67,
-        "longitude": 45.79,
+        "latitude": 45.79,
+        "longitude": 126.67,
         "comment": "LoRa APRS iGate 433.775Mhz",
         "interval": 15,
         "overlay": "L",
@@ -85,7 +82,7 @@
         "password": ""
     },
     "ntp": {
-        "gmtCorrection": 0.0
+        "gmtCorrection": 8
     },
     "other": {
         "rememberStationTime": 120,
