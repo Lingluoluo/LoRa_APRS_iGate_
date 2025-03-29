@@ -82,10 +82,14 @@
         "password": ""
     },
     "ntp": {
-        "gmtCorrection": 8
+        "gmtCorrection": 0.0
     },
+    "remoteManagement": {
+        "managers": "",
+        "rfOnly": true
+    },        
     "other": {
-        "rememberStationTime": 120,
+        "rememberStationTime": 30,
         "lowPowerMode": false,
         "lowVoltageCutOff": 0,
         "backupDigiMode": false,
@@ -93,5 +97,5 @@
         "rebootModeTime": 6
     },
     "personalNote": "",
-    "blackList": ""
+    "blacklist": ""
 }

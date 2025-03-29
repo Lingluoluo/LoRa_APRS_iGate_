@@ -61,14 +61,14 @@ namespace Utils {
         }
         if (WiFi.status() == WL_CONNECTED && Config.aprs_is.active && Config.beacon.sendViaAPRSIS) {
             delay(1000);
-            status.concat(",qAC:>https://yuluoxk.cn/ Lora Aprs iGate ");
+            status.concat(",qAC:>https://github.com/richonguzman/LoRa_APRS_iGate ");
             status.concat(versionDate);
             APRS_IS_Utils::upload(status);
             SYSLOG_Utils::log(2, status, 0, 0.0, 0);   // APRSIS TX
             statusAfterBoot = false;
         }
         if (statusAfterBoot && !Config.beacon.sendViaAPRSIS && Config.beacon.sendViaRF) {
-            status.concat(":>https://yuluoxk.cn/ Lora Aprs iGate ");
+            status.concat(":>https://github.com/richonguzman/LoRa_APRS_iGate ");
             status.concat(versionDate);
             STATION_Utils::addToOutputPacketBuffer(status);
             statusAfterBoot = false;
@@ -94,12 +94,12 @@ namespace Utils {
         #endif
         Serial.println("\nStarting Station: " + Config.callsign + "   Version: " + versionDate);
         Serial.println((Config.digi.ecoMode) ? "(DigiEcoMode: ON)" : "(DigiEcoMode: OFF)");
-        displayShow(" LoRa APRS", "", "", "   ( iGATE & DIGI )", "", "" , "  QwQQ  " + versionDate, 4000);
+        displayShow(" LoRa APRS", "", "", "   ( iGATE & DIGI )", "", "" , "  CA2RXU  " + versionDate, 4000);
         #ifdef INTERNAL_LED_PIN
             digitalWrite(INTERNAL_LED_PIN,LOW);
         #endif
         firstLine   = Config.callsign;
-        seventhLine = "  listeningQwQ...";
+        seventhLine = "     listening...";
     }
 
     void activeStations() {
@@ -293,7 +293,7 @@ namespace Utils {
             if (Config.beacon.sendViaAPRSIS && Config.aprs_is.active && passcodeValid && !backUpDigiMode) {
                 Utils::println("-- Sending Beacon to APRSIS --");
                 displayShow(firstLine, secondLine, thirdLine, fourthLine, fifthLine, sixthLine, "SENDING IGATE BEACON", 0);
-                seventhLine = "  listeningQwQ...";
+                seventhLine = "     listening...";
                 #ifdef HAS_A7670
                     A7670_Utils::uploadToAPRSIS(beaconPacket);
                 #else
@@ -304,7 +304,7 @@ namespace Utils {
             if (Config.beacon.sendViaRF || backUpDigiMode) {
                 Utils::println("-- Sending Beacon to RF --");
                 displayShow(firstLine, secondLine, thirdLine, fourthLine, fifthLine, sixthLine, "SENDING DIGI BEACON", 0);
-                seventhLine = "  listeningQwQ...";
+                seventhLine = "     listening...";
                 STATION_Utils::addToOutputPacketBuffer(secondaryBeaconPacket);
             }
 

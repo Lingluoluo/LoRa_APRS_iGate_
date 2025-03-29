@@ -37,15 +37,16 @@ namespace SYSLOG_Utils {
                         syslogPacket.concat(sender);
                         syslogPacket.concat(" ---> "); 
                         syslogPacket.concat(packet.substring(colonIndex + 2));
-                    } else if (nextChar == '!' || nextChar == '=') {
+                    } else if (nextChar == '!' || nextChar == '=' || nextChar == '@') {
                         syslogPacket.concat("GPS / ");
                         syslogPacket.concat(sender);
                         syslogPacket.concat(" / ");
+                        int greaterThanIndex = packet.indexOf(">");
                         if (packet.indexOf("WIDE1-1") > 10) {
-                            syslogPacket.concat(packet.substring(packet.indexOf(">") + 1, packet.indexOf(",")));
+                            syslogPacket.concat(packet.substring(greaterThanIndex + 1, packet.indexOf(",")));
                             syslogPacket.concat(" / WIDE1-1");
                         } else {
-                            syslogPacket.concat(packet.substring(packet.indexOf(">") + 1, colonIndex));
+                            syslogPacket.concat(packet.substring(greaterThanIndex + 1, colonIndex));
                             syslogPacket.concat(" / -");
                         }
                     } else if (nextChar == '>') {
@@ -72,7 +73,7 @@ namespace SYSLOG_Utils {
                         syslogPacket.concat(packet);
                     }
                     syslogPacket.concat(signalData);
-                    if (nextChar == '!' || nextChar == '=') {
+                    if (nextChar == '!' || nextChar == '=' || nextChar == '@') {
                         syslogPacket.concat(" / ");
                         syslogPacket.concat(GPS_Utils::getDistanceAndComment(packet));
                     }
