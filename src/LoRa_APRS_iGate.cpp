@@ -47,7 +47,7 @@ ___________________________________________________________________*/
 #endif
 
 
-String              versionDate             = "2025.03.20";
+String              versionDate             = "2025.04.02";
 Configuration       Config;
 WiFiClient          espClient;
 #ifdef HAS_GPS
