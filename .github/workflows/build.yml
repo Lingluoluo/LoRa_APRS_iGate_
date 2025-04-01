@@ -89,6 +89,8 @@ jobs:
                       chip: esp32s3
                     - name: TROY_LoRa_APRS
                       chip: esp32                    
+                    - name: esp32c3_DIY_1W_LoRa_LLCC68
+                      chip: esp32c3
         steps:
             - uses: actions/checkout@v3
 
