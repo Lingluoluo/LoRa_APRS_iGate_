@@ -8,6 +8,7 @@
 #include "ntp_utils.h"
 #include "display.h"
 #include "utils.h"
+#include "esp_task_wdt.h"
 
 extern Configuration    Config;
 extern uint32_t         lastRxTime;
@@ -49,6 +50,7 @@ namespace LoRa_Utils {
     }
 
     void setup() {
+        esp_task_wdt_deinit();
         #ifdef LIGHTGATEWAY_1_0
             pinMode(RADIO_VCC_PIN,OUTPUT);
             digitalWrite(RADIO_VCC_PIN,HIGH);
@@ -235,5 +237,23 @@ namespace LoRa_Utils {
     void sleepRadio() {
         radio.sleep();
     }
+    void app_main() {
+        esp_task_wdt_deinit();  // 禁用任务看门狗
+        // 其他初始化代码
+    }
+    void startContinuousWave() {
+        // 设置频率
+        float freq = static_cast<float>(Config.loramodule.txFreq) / 1000000;
+        radio.setFrequency(freq);
+        // 设置输出功率
+        radio.setOutputPower(Config.loramodule.power);
 
+        // 启动未调制的载波传输
+        radio.transmitDirect();
+    }
+
+    void stopContinuousWave() {
+        // 停止未调制的载波传输，进入待机模式
+        radio.standby();
+    }
 }

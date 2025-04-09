@@ -14,7 +14,9 @@ namespace LoRa_Utils {
     void    changeFreqRx();
     void    startReceive();
     void    sleepRadio();
-
+    void    startContinuousWave();
+    void    stopContinuousWave();
+    
 }
 
 #endif

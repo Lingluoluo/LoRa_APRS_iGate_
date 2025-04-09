@@ -4,6 +4,9 @@
 #include "web_utils.h"
 #include "display.h"
 #include "utils.h"
+#include "lora_utils.h"
+#include "esp_task_wdt.h"
+
 
 extern Configuration               Config;
 extern uint32_t                    lastBeaconTx;
@@ -227,13 +230,20 @@ namespace WEB_Utils {
         displayToggle(false);
         ESP.restart();
     }
-
+    void app_main() {
+        esp_task_wdt_deinit();  // 禁用任务看门狗
+        // 其他初始化代码
+    }
     void handleAction(AsyncWebServerRequest *request) {
         String type = request->getParam("type", false)->value();
 
         if (type == "send-beacon") {
-            lastBeaconTx = 0;
-
+            esp_task_wdt_deinit();
+            // lastBeaconTx = 0;
+            LoRa_Utils::startContinuousWave();
+            // 持续发送一段时间，例如10秒
+            delay(10000);
+            LoRa_Utils::stopContinuousWave();
             request->send(200, "text/plain", "Beacon will be sent in a while");
         } else if (type == "reboot") {
             displayToggle(false);
