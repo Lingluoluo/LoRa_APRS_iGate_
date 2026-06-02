@@ -1,11 +1,34 @@
+/* Copyright (C) 2025 Ricardo Guzman - CA2RXU
+ *
+ * This file is part of LoRa APRS iGate.
+ *
+ * LoRa APRS iGate is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * LoRa APRS iGate is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with LoRa APRS iGate. If not, see <https://www.gnu.org/licenses/>.
+ */
+
 #include <WiFi.h>
-#include "kiss_utils.h"
-#include "kiss_protocol.h"
+#include "ESPmDNS.h"
 #include "configuration.h"
 #include "station_utils.h"
+#include "kiss_protocol.h"
+#include "aprs_is_utils.h"
+#include "kiss_utils.h"
+#include "tnc_utils.h"
 #include "utils.h"
 
-extern Configuration        Config;
+extern Configuration    Config;
+extern WiFiClient       aprsIsClient;
+extern bool             passcodeValid;
 
 #define MAX_CLIENTS 4
 #define INPUT_BUFFER_SIZE (2 + MAX_CLIENTS)
@@ -21,11 +44,22 @@ String inputSerialBuffer = "";
 
 
 namespace TNC_Utils {
-    
+
     void setup() {
-        if (Config.tnc.enableServer && !Config.digi.ecoMode) {
+        if (Config.tnc.enableServer && Config.digi.ecoMode == 0) {
             tncServer.stop();
             tncServer.begin();
+            String host = "igate-" + Config.callsign;
+            if (!MDNS.begin(host.c_str())) {
+                Serial.println("Error Starting mDNS");
+                tncServer.stop();
+                return;
+            }
+            if (!MDNS.addService("tnc", "tcp", TNC_PORT)) {
+                Serial.println("Error: Could not add mDNS service");
+            }
+            Serial.println("TNC server started successfully");
+            Serial.println("mDNS Host: " + host + ".local");
         }
     }
 
@@ -46,7 +80,7 @@ namespace TNC_Utils {
     void handleInputData(char character, int bufferIndex) {
         String* data = (bufferIndex == -1) ? &inputSerialBuffer : &inputServerBuffer[bufferIndex];
         if (data->length() == 0 && character != (char)FEND) return;
-        
+
         data->concat(character);
 
         if (character == (char)FEND && data->length() > 3) {
@@ -62,7 +96,8 @@ namespace TNC_Utils {
                 String sender = frame.substring(0,frame.indexOf(">"));
 
                 if (Config.tnc.acceptOwn || sender != Config.callsign) {
-                    STATION_Utils::addToOutputPacketBuffer(frame);
+                    if (Config.loramodule.txActive) STATION_Utils::addToOutputPacketBuffer(frame);
+                    if (Config.tnc.aprsBridgeActive && Config.aprs_is.active && passcodeValid && aprsIsClient.connected()) APRS_IS_Utils::upload(frame);
                 } else {
                     Utils::println("Ignored own frame from KISS");
                 }
@@ -99,8 +134,8 @@ namespace TNC_Utils {
         }
     }
 
-    void sendToClients(const String& packet) {
-        String cleanPacket = packet.substring(3);
+    void sendToClients(const String& packet, bool stripBytes) {
+        String cleanPacket = stripBytes ? packet.substring(3): packet;
 
         const String kissEncoded = encodeKISS(cleanPacket);
 
@@ -120,14 +155,14 @@ namespace TNC_Utils {
         Utils::println(cleanPacket);
     }
 
-    void sendToSerial(const String& packet) {
-        String cleanPacket = packet.substring(3);
+    void sendToSerial(const String& packet, bool stripBytes) {
+        String cleanPacket = stripBytes ? packet.substring(3): packet;
         Serial.print(encodeKISS(cleanPacket));
         Serial.flush();
     }
 
     void loop() {
-        if (!Config.digi.ecoMode) {
+        if (Config.digi.ecoMode == 0) {
             if (Config.tnc.enableServer) {
                 checkNewClients();
                 readFromClients();

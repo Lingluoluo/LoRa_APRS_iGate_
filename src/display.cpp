@@ -1,3 +1,21 @@
+/* Copyright (C) 2025 Ricardo Guzman - CA2RXU
+ *
+ * This file is part of LoRa APRS iGate.
+ *
+ * LoRa APRS iGate is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * LoRa APRS iGate is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with LoRa APRS iGate. If not, see <https://www.gnu.org/licenses/>.
+ */
+
 #include <Wire.h>
 #include "configuration.h"
 #include "board_pinout.h"
@@ -8,7 +26,7 @@
     #ifdef HAS_TFT
         #include <TFT_eSPI.h>
 
-        TFT_eSPI tft = TFT_eSPI(); 
+        TFT_eSPI tft = TFT_eSPI();
         TFT_eSprite sprite  = TFT_eSprite(&tft);
 
         #ifdef HELTEC_WIRELESS_TRACKER
@@ -26,11 +44,20 @@
         #ifdef HAS_EPAPER
             #include <heltec-eink-modules.h>
             #include "Fonts/FreeSansBold9pt7b.h"
-            EInkDisplay_WirelessPaperV1_1 display;
+            #ifdef HELTEC_WP_V1
+                EInkDisplay_WirelessPaperV1_1 display;
+            #endif
+            #ifdef HELTEC_WP_V1_2
+                EInkDisplay_WirelessPaperV1_2 display;
+            #endif
+            #ifdef HELTEC_VM_E290
+                EInkDisplay_VisionMasterE290 display;
+            #endif
+
             String lastEpaperText;
         #else
             #include <Adafruit_GFX.h>
-            #if defined(TTGO_T_Beam_S3_SUPREME_V3)
+            #ifdef HAS_SH1106
                 #include <Adafruit_SH110X.h>
                 Adafruit_SH1106G display(128, 64, &Wire, OLED_RST);
             #else
@@ -38,16 +65,22 @@
                 #ifdef HELTEC_WSL_V3_DISPLAY
                     Adafruit_SSD1306 display(128, 64, &Wire1, OLED_RST);
                 #else
-                    Adafruit_SSD1306 display(128, 64, &Wire, OLED_RST);
+                    #if defined RPC_LORA_DIGIGATE_1W
+                        #define SCREEN_HEIGHT 32
+                    #else
+                        #define SCREEN_HEIGHT 64
+                    #endif
+                    Adafruit_SSD1306 display(128, SCREEN_HEIGHT, &Wire, OLED_RST);
                 #endif
             #endif
         #endif
     #endif
 #endif
-    
+
 extern  Configuration   Config;
 
 bool    displayFound    = false;
+int     maxLines;
 
 void displaySetup() {
     #ifdef HAS_DISPLAY
@@ -65,14 +98,27 @@ void displaySetup() {
             tft.setTextFont(0);
             tft.fillScreen(TFT_BLACK);
             #if defined(TTGO_T_DECK_GPS) || defined(TTGO_T_DECK_PLUS)
-                sprite.createSprite(320,240);
+                sprite.createSprite(320, 240);
             #else
-                sprite.createSprite(160,80);
+                sprite.createSprite(160, 80);
             #endif
         #else
+            #if (SCREEN_HEIGHT == 64)
+                maxLines = 6;
+            #elif (SCREEN_HEIGHT == 32)
+                maxLines = 3;
+            #endif
             #ifdef HAS_EPAPER
                 display.landscape();
                 display.printCenter("LoRa APRS iGate Initialising...");
+                if (Config.display.turn180) {
+                    #if defined(HELTEC_VM_E290) || defined(HELTEC_WP_V1)
+                        display.setRotation(3);
+                    #endif
+                    #if defined(HELTEC_WP_V1_2)
+                        display.setRotation(1);
+                    #endif
+                }
                 display.update();
             #else
                 #ifdef OLED_DISPLAY_HAS_RST_PIN
@@ -82,8 +128,8 @@ void displaySetup() {
                     digitalWrite(OLED_RST, HIGH);
                 #endif
 
-                #if defined(TTGO_T_Beam_S3_SUPREME_V3)
-                    if (!display.begin(0x3c, false)) {
+                #ifdef HAS_SH1106
+                    if (display.begin(0x3c, false)) {
                         displayFound = true;
                         if (Config.display.turn180) display.setRotation(2);
                         display.clearDisplay();
@@ -122,7 +168,7 @@ void displayToggle(bool toggle) {
                     display.printCenter("EPAPER Display Disabled by toggle...");
                     display.update();
                 #else
-                    #if defined(TTGO_T_Beam_S3_SUPREME_V3)
+                    #ifdef HAS_SH1106
                         if (displayFound) display.oled_command(SH110X_DISPLAYON);
                     #else
                         if (displayFound) display.ssd1306_command(SSD1306_DISPLAYON);
@@ -134,15 +180,14 @@ void displayToggle(bool toggle) {
                 digitalWrite(TFT_BL, LOW);
             #else
                 #ifdef HAS_EPAPER
-                    display.printCenter("Enabled EPAPER Display...");
                     display.update();
                 #else
-                    #if defined(TTGO_T_Beam_S3_SUPREME_V3)
+                    #ifdef HAS_SH1106
                         if (displayFound) display.oled_command(SH110X_DISPLAYOFF);
                     #else
                         if (displayFound) display.ssd1306_command(SSD1306_DISPLAYOFF);
                     #endif
-                    
+
                 #endif
             #endif
         }
@@ -172,7 +217,7 @@ void displayShow(const String& header, const String& line1, const String& line2,
                 sprite.drawString(*lines[i], 3, (lineSpacing * (2 + i)) - 2);
             }
 
-            sprite.pushSprite(0,0);
+            sprite.pushSprite(0, 0);
         #else
             #ifdef HAS_EPAPER
                 display.clearMemory();
@@ -188,7 +233,7 @@ void displayShow(const String& header, const String& line1, const String& line2,
             #else
                 if (displayFound) {
                     display.clearDisplay();
-                    #if defined(TTGO_T_Beam_S3_SUPREME_V3)
+                    #ifdef HAS_SH1106
                         display.setTextColor(SH110X_WHITE);
                     #else
                         display.setTextColor(WHITE);
@@ -200,7 +245,7 @@ void displayShow(const String& header, const String& line1, const String& line2,
                         display.setCursor(0, 8 + (8 * i));
                         display.println(*lines[i]);
                     }
-                    #if defined(TTGO_T_Beam_S3_SUPREME_V3)
+                    #ifdef HAS_SH1106
                         display.setContrast(1);
                     #else
                         display.ssd1306_command(SSD1306_SETCONTRAST);
@@ -237,7 +282,7 @@ void displayShow(const String& header, const String& line1, const String& line2,
                 sprite.drawString(*lines[i], 3, (lineSpacing * (2 + i)) - 2);
             }
 
-            sprite.pushSprite(0,0);
+            sprite.pushSprite(0, 0);
         #else
             #ifdef HAS_EPAPER
                 lastEpaperText = header + line1 + line2 + line3 + line4 + line5 + line6;
@@ -254,7 +299,7 @@ void displayShow(const String& header, const String& line1, const String& line2,
             #else
                 if (displayFound) {
                     display.clearDisplay();
-                    #if defined(TTGO_T_Beam_S3_SUPREME_V3)
+                    #ifdef HAS_SH1106
                         display.setTextColor(SH110X_WHITE);
                     #else
                         display.setTextColor(WHITE);
@@ -263,11 +308,11 @@ void displayShow(const String& header, const String& line1, const String& line2,
                     display.setCursor(0, 0);
                     display.println(header);
                     display.setTextSize(1);
-                    for (int i = 0; i < 6; i++) {
+                    for (int i = 0; i < maxLines; i++) {
                         display.setCursor(0, 16 + (8 * i));
                         display.println(*lines[i]);
                     }
-                    #if defined(TTGO_T_Beam_S3_SUPREME_V3)
+                    #ifdef HAS_SH1106
                         display.setContrast(1);
                     #else
                         display.ssd1306_command(SSD1306_SETCONTRAST);

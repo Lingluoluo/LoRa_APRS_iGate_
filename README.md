@@ -2,47 +2,45 @@
 
 This firmware is for using ESP32 based boards with LoRa Modules and GPS to live in the APRS world.
 
-![Screenshot](https://github.com/richonguzman/LoRa_APRS_iGate/blob/main/images/iGateOledScreen.jpeg)
+![Screenshot](https://github.com/richonguzman/LoRa_APRS_iGate/raw/main/images/iGateOledScreen.jpeg)
 
 __(This iGate Firmware works with all LoRa Tracker Firmwares (specially this <a href="https://github.com/richonguzman/LoRa_APRS_Tracker" target="_blank">LoRa APRS Tracker Firmware</a>))__
 <br />
 
 ____________________________________________________
 
-## You can support this project to continue to grow:
+# <a href="https://richonguzman.github.io/lora-igate-web-flasher/installer.html" target="_blank">WEB FLASHER/INSTALLER</a>
 
-[<img src="https://github.com/richonguzman/LoRa_APRS_Tracker/blob/main/images/github-sponsors.png">](https://github.com/sponsors/richonguzman)     [<img src="https://github.com/richonguzman/LoRa_APRS_Tracker/blob/main/images/paypalme.png">](http://paypal.me/richonguzman)
 
-<br />
-
-# WEB FLASHER/INSTALLER is <a href="https://richonguzman.github.io/lora-igate-web-flasher/installer.html" target="_blank">here</a>
+# <a href="https://drive.google.com/file/d/1Hff_Szd7ks8RC7_RiV6POxPJlclbO05M/view?usp=sharing" target="_blank">LoRa APRS iGate CA2RXU Firmware Manual</a>
 
 ____________________________________________________
 
-# WIKI
+## You can support this project to continue to grow:
 
-### FAQ, BME280, TNC and more --> <a href="https://github.com/richonguzman/LoRa_APRS_iGate/wiki/00.-FAQ-(frequently-asked-questions)" target="_blank">here</a>.
+[<img src="https://github.com/richonguzman/LoRa_APRS_Tracker/raw/main/images/github-sponsors.png">](https://github.com/sponsors/richonguzman)     [<img src="https://github.com/richonguzman/LoRa_APRS_Tracker/raw/main/images/paypalme.png">](http://paypal.me/richonguzman)
 
-### Installation Guide --> <a href="https://github.com/richonguzman/LoRa_APRS_iGate/wiki/01.-Installation-Guide" target="_blank">here</a>.
-<br />
+____________________________________________________
 
-# SUPPORTED BOARDS
-
-### Buying links --> <a href="https://github.com/richonguzman/LoRa_APRS_iGate/wiki/108.-Supported-Boards-and-Buying-Links" target="_blank">here</a>.
+## SUPPORTED BOARDS (<a href="https://github.com/richonguzman/LoRa_APRS_iGate/wiki/Supported-Boards-and-Buying-Links" target="_blank">Buying links</a>).
 
 (NOTE: all boards with 433-868-915 MHz versions)
 
 - TTGO Lilygo LoRa32 T3S3 V1.2 and LoRa32 V2.1 (V1.6 is the same).
 
-- TTGO T-Beam V1.0 , V1.1, V1.2 (also variations with SX1262 and SX1268 LoRa Modules).
+- TTGO T-Beam V1.0 , V1.1, V1.2 (also variations with SX1262 and SX1268 LoRa Modules) and Supreme V3.
 
 - T-Deck Plus (and also regular T-Deck with/without GPS).
 
-- HELTEC V2, V3 , Wireless Stick, Wireless Stick Lite, HT-CT62, Wireless Tracker, Wireless Paper.
+- HELTEC V2, V3, V3.2, T114, Wireless Stick, Wireless Stick Lite V3/V3.2, HT-CT62, Wireless Tracker, Wireless Paper.
 
-- QRP Labs LightGateway 1.0.
+- RAK Wireless 4631 + 19007(or 19003)
 
-- ESP32 Wroom + SX1278 LoRa Module or Ebyte 400M30S (or 900M30S) 1W LoRa Module for a DIY Versions.
+- Faketec V3 (NRF52840 + Heltec HTRA62(SX1262))
+
+- QRP Labs LightGateway 1.0 and Plus 1.0.
+
+- ESP32 + SX1278 LoRa Module or Ebyte 400M30S (or 900M30S) 1W LoRa Module for a DIY Versions.
 
 - ESP32C3 + Ebyte 400M30S(or 900M30S) 1W LoRa Module for another DIY version.
 
@@ -52,8 +50,29 @@ ____________________________________________________
 
 <br />
 
-## Timeline (Versions):
-
+# Timeline (Versions):
+- 2026-03-25 More Boards, SDK update, OTA fix, GPS process update.
+- 2026-02-26 9M2IBR ESP32 1W (400M30S) + GPS board added.
+- 2026-02-25 Code Improvements: reduced String comparisons and improved logic for faster code execution.
+- 2026-02-15 Digipeater code/logic improved.
+- 2026-02-08 Heltec V2 915MHz added.
+- 2026-02-05 Improved "digiBackupMode" to check "APRS-IS" server connection.
+- 2026-01-07 Tactical Callsign added.
+- 2026-01-05 Heltec V4 support added.
+- 2025-12-22 Heltec Wireless Paper V1.2 and VisionMaster E290 Added. Thanks HA5SZI.
+- 2025-12-18 TCXO and packet decoding updates.
+- 2025-12-01 APRSPacketLib updates, AHT20 sensor added, INA219 support added.
+- 2025-10-15 APRS Bridge for TNC added.
+- 2025-10-13 Rx and Tx Frequencies are now with fully configurable.
+- 2025-10-13 Startup Delay to allow the Router/Modem to start WiFiAP before connecting.
+- 2025-10-12 Choose to send Beacon on Rx or Tx frequency.
+- 2025-10-11 User defined NTP server and send beacon over MQTT added.
+- 2025-10-10 Converted the Wiki into a PDF manual.
+- 2025-09-26 Heltec Wireless Bridge support added.
+- 2025-09-09 MQTT added (pub+sub), Status defined by Op now and many fixes more.
+- 2025-06-20 Digipeaters now with updated EcoMode (Board Sleeps until packet Rx reducing current consumption to almost 10% at idle).
+- 2025-06-20 New Boards Added: Heltec T114 MeshNode, Faketec V3 as Digipeaters and QRP Labs LightGateway Plus 1.0.
+- 2025-06-19 DateVersion format Change. Licence changed into GNU GPLv3.
 - 2025.03.20 Manager List added to enable/disable DigiEcoMode and Tx Control. Thanks LB5JJ.
 - 2025.03.03 T-Beam Supreme board added and more BlackList rules added.
 - 2025.02.28 Heltec Wireless Paper with Epaper working. Thanks SzymonPriv for pointing to the right library.
@@ -72,7 +91,7 @@ ____________________________________________________
 - 2024.10.08 New EcoMode for Remote Digipeaters without WiFi/WiFiAP, Screen, Leds (Example: LILYGO LoRa32 uses only 24mA, with WifiAP 150mA). APRS Message/Queries can start/stop this mode too.
 - 2024.10.06 Cross Frequency Digipeater Rules added.
 - 2024.09.23 Libraries Update for SDK3
-- 2024.09.23 Added Enconded Telemetry for Battery (+ External Voltage) in Station GPS Beacon Packet. 
+- 2024.09.23 Added Enconded Telemetry for Battery (+ External Voltage) in Station GPS Beacon Packet.
 - 2024.08.23 Wemos S2 Mini DIY LoRa added.
 - 2024.08.19 HELTEC Wireless Paper working (still missing Epaper code).
 - 2024.08.13 Web Authentication for WebUI. Thanks Mitja S57PNX.

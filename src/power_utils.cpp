@@ -1,7 +1,26 @@
+/* Copyright (C) 2025 Ricardo Guzman - CA2RXU
+ *
+ * This file is part of LoRa APRS iGate.
+ *
+ * LoRa APRS iGate is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * LoRa APRS iGate is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with LoRa APRS iGate. If not, see <https://www.gnu.org/licenses/>.
+ */
+
 #include "configuration.h"
 #include "battery_utils.h"
 #include "board_pinout.h"
 #include "power_utils.h"
+#include "utils.h"
 
 #if defined(HAS_AXP192) || defined(HAS_AXP2101)
     #ifdef TTGO_T_Beam_S3_SUPREME_V3
@@ -25,9 +44,40 @@
 #endif
 
 extern Configuration    Config;
+extern bool             stationCallsignIsValid;
 
 
 namespace POWER_Utils {
+
+    #ifdef ADC_CTRL_PIN
+        void adc_ctrl_ON() {
+            digitalWrite(ADC_CTRL_PIN, ADC_CTRL_ON_STATE);
+        }
+
+        void adc_ctrl_OFF() {
+            digitalWrite(ADC_CTRL_PIN, !ADC_CTRL_ON_STATE);
+        }
+    #endif
+
+    #ifdef VEXT_CTRL_PIN
+        void vext_ctrl_ON() {
+            digitalWrite(VEXT_CTRL_PIN, Config.digi.ecoMode == 1 ? !VEXT_CTRL_ON_STATE : VEXT_CTRL_ON_STATE);
+        }
+
+        void vext_ctrl_OFF() {
+            digitalWrite(VEXT_CTRL_PIN, Config.digi.ecoMode == 1 ? VEXT_CTRL_ON_STATE : !VEXT_CTRL_ON_STATE);
+        }
+    #endif
+
+    #if defined(HAS_AXP192) || defined(HAS_AXP2101)
+        void activateMeasurement() {
+            PMU.disableTSPinMeasure();
+            PMU.enableBattDetection();
+            PMU.enableVbusVoltageMeasure();
+            PMU.enableBattVoltageMeasure();
+            PMU.enableSystemVoltageMeasure();
+        }
+    #endif
 
     double getBatteryVoltage() {
         #if defined(HAS_AXP192) || defined(HAS_AXP2101)
@@ -42,16 +92,6 @@ namespace POWER_Utils {
             return PMU.isBatteryConnect();
         #else
             return false;
-        #endif
-    }
-
-    void activateMeasurement() {
-        #if defined(HAS_AXP192) || defined(HAS_AXP2101)
-            PMU.disableTSPinMeasure();
-            PMU.enableBattDetection();
-            PMU.enableVbusVoltageMeasure();
-            PMU.enableBattVoltageMeasure();
-            PMU.enableSystemVoltageMeasure();
         #endif
     }
 
@@ -71,7 +111,7 @@ namespace POWER_Utils {
             #endif
         #endif
         #ifdef HELTEC_WIRELESS_TRACKER
-            digitalWrite(VEXT_CTRL, HIGH);
+            adc_ctrl_ON();
         #endif
         //gpsIsActive = true;
     }
@@ -89,7 +129,7 @@ namespace POWER_Utils {
             #endif
         #endif
         #ifdef HELTEC_WIRELESS_TRACKER
-            digitalWrite(VEXT_CTRL, LOW);
+            adc_ctrl_OFF();
         #endif
         //gpsIsActive = false;
     }
@@ -216,41 +256,26 @@ namespace POWER_Utils {
 
         #ifdef INTERNAL_LED_PIN
             pinMode(INTERNAL_LED_PIN, OUTPUT);
+            digitalWrite(INTERNAL_LED_PIN, LOW);
         #endif
 
         if (Config.battery.sendExternalVoltage || Config.battery.monitorExternalVoltage) {
             pinMode(Config.battery.externalVoltagePin, INPUT);
         }
 
-        #ifdef VEXT_CTRL
-            pinMode(VEXT_CTRL,OUTPUT); // GPS + TFT on HELTEC Wireless_Tracker and only for Oled in HELTEC V3
-            #if defined(HELTEC_WIRELESS_TRACKER) || defined(HELTEC_V3) 
-                digitalWrite(VEXT_CTRL, HIGH);
-            #endif
-            #if defined(HELTEC_WP) || defined(HELTEC_WS) || defined(HELTEC_V3_2)
-                digitalWrite(VEXT_CTRL, LOW);
-            #endif
+        #ifdef VEXT_CTRL_PIN
+            pinMode(VEXT_CTRL_PIN,OUTPUT); // GPS + TFT on HELTEC Wireless_Tracker and only for Oled in HELTEC V3
+            vext_ctrl_ON();
         #endif
-        
+
         #ifdef HAS_GPS
-            if (Config.beacon.gpsActive) activateGPS();
+            if (Config.beacon.gpsActive && Config.digi.ecoMode != 1) activateGPS();
         #endif
 
-        #ifdef ADC_CTRL
-            pinMode(ADC_CTRL, OUTPUT);
+        #ifdef ADC_CTRL_PIN
+            pinMode(ADC_CTRL_PIN, OUTPUT);
+            adc_ctrl_OFF();
         #endif
-
-        #if defined(HELTEC_WIRELESS_TRACKER)
-            Wire.begin(BOARD_I2C_SDA, BOARD_I2C_SCL);
-        #endif
-
-        #if defined(HELTEC_V3) || defined(HELTEC_V3_2) || defined(HELTEC_WS) || defined(LIGHTGATEWAY_1_0) || defined(TTGO_LORA32_T3S3_V1_2) || defined(HELTEC_V2)
-            Wire.begin(OLED_SDA, OLED_SCL);
-        #endif
-
-        #if defined(HELTEC_V3) || defined(HELTEC_V3_2) || defined(HELTEC_WP) || defined(HELTEC_WSL_V3) || defined(HELTEC_WSL_V3_DISPLAY)
-            Wire1.begin(BOARD_I2C_SDA, BOARD_I2C_SCL);
-        #endif      
 
         #if defined(TTGO_T_DECK_GPS) || defined(TTGO_T_DECK_PLUS)
             pinMode(BOARD_POWERON, OUTPUT);
@@ -265,12 +290,21 @@ namespace POWER_Utils {
             digitalWrite(TFT_CS, HIGH);
 
             delay(500);
-            Wire.begin(BOARD_I2C_SDA, BOARD_I2C_SCL);
-        #endif  
-        
+        #endif
+
+        #ifdef USE_WIRE_WITH_OLED_PINS
+            Wire.begin(OLED_SDA, OLED_SCL);
+        #endif
+
+        #ifdef SENSOR_I2C_BUS
+            SENSOR_I2C_BUS.begin(BOARD_I2C_SDA, BOARD_I2C_SCL);
+        #endif
+
         delay(1000);
         BATTERY_Utils::setup();
         BATTERY_Utils::startupBatteryHealth();
+        stationCallsignIsValid = Utils::callsignIsValid(Config.callsign);
+        setCpuFrequencyMhz(80);
     }
 
 }

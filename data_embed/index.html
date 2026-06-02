@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="auto">
+<html lang="en" data-bs-theme="dark">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -16,7 +16,7 @@
             >
                 <div class="container">
                     <a class="navbar-brand" href=""
-                        >LoRa iGate</a
+                        >CA2RXU's LoRa iGate</a
                     >
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -25,30 +25,30 @@
                         <ul class="navbar-nav me-auto">
                             <li class="nav-item">
                                 <a class="nav-link" href="/">
-                                    配置
+                                    Configuration
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/update">
-                                    更新 <small>OTA</small>
+                                    Update <small>OTA</small>
                                 </a>
                             </li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">备份</a>
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Backup</a>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#" id="backup">下载</a>
-                                    <a class="dropdown-item" href="#" id="restore">恢复</a>
+                                    <a class="dropdown-item" href="#" id="backup">Download Conf.</a>
+                                    <a class="dropdown-item" href="#" id="restore">Restore Conf.</a>
                                 </div>
                             </li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">设备</a>
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Device</a>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#" id="reboot">重启</a>
+                                    <a class="dropdown-item" href="#" id="reboot">Reboot</a>
                                 </div>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/received-packets">
-                                    接收的数据包
+                                    Received packets
                                 </a>
                             </li>
                         </ul>
@@ -62,11 +62,11 @@
             <div class="container d-none" id="received-packets">
                 <div class="row my-5 d-flex align-items-top">
                     <div class="col-12">
-                        <h3>最近10个接收到的数据包</h3>
+                        <h3>Last 10 received packets list</h3>
                         <table class="table mt-4">
                             <thead>
                                 <tr>
-                                    <th scope="col">时间</th>
+                                    <th scope="col">Time</th>
                                     <th scope="col">Frame</th>
                                     <th scope="col">RSSI</th>
                                     <th scope="col">SNR</th>
@@ -76,11 +76,11 @@
                                 
                             </tbody>
                         </table>
-                        <span>列表每15秒自动刷新一次。</span><br>
-                        <small>（当地时间为NTP时间，根据您的GMT偏移量进行调整）</small>
+                        <span>List refresh automatically every 15 seconds.</span><br>
+                        <small>(Local Time is NTP-Time adjusted with your GMT Offset)</small>
                     </div>
                 </div>
-                <hr />
+                <hr>
             </div>
         
             <div class="container" id="configuration">
@@ -105,23 +105,23 @@
                                             d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"
                                         />
                                     </svg>
-                                    电台
+                                    Station
                                 </h5>
                                 <small
-                                    >添加您的呼号和SSID。 
+                                    >Add your Ham callsign and SSID. 
                                     <br>
                                     <br>
-                                    你可以留下一句话来描述你的电台。 
+                                    You can leave a comment describing your station. 
                                     <br>
                                     <br>
-                                    在底部有一个只能在WEB GUI中看到的个人笔记字段。
+                                    In the bottom there is a field for personal note that can only be seen in WEB GUI.
                                 </small>
                             </div>
                             <div class="col-lg-9 col-sm-12">
                                 <div class="row">
-                                    <div class="col-12">
+                                    <div class="col-6">
                                         <label for="callsign" class="form-label"
-                                            >呼号 - SSID</label
+                                            >Callsign - SSID</label
                                         >
                                         <input
                                             type="text"
@@ -133,33 +133,45 @@
                                             oninput="this.value = this.value.toUpperCase();"
                                         />
                                     </div>
+                                    <div class="col-6">
+                                        <label for="tacticalCallsign" class="form-label"
+                                            >Tactical Callsign</label
+                                        >
+                                        <input
+                                            type="text"
+                                            name="tacticalCallsign"
+                                            id="tacticalCallsign"
+                                            class="form-control"
+                                            placeholder=""
+                                            oninput="this.value = this.value.toUpperCase();"
+                                        />
+                                    </div>
                                     <div class="col-12 mt-3">
                                         <label
                                             for="beacon.comment"
                                             class="form-label"
-                                            >转发器描述</label
+                                            >Beacon Comment</label
                                         >
                                         <input
                                             type="text"
                                             name="beacon.comment"
                                             id="beacon.comment"
                                             class="form-control"
-                                            placeholder="LoRa APRS"
-                                            required=""
+                                            placeholder=""
                                         />
                                     </div>
                                     <div class="col-12 mt-3">
                                         <label
                                             for="beacon.path"
                                             class="form-label"
-                                            >转发器路径</label
+                                            >Beacon Path</label
                                         >
                                         <input
                                             type="text"
                                             name="beacon.path"
                                             id="beacon.path"
                                             class="form-control"
-                                            placeholder="一般用WIDE1-1"
+                                            placeholder="WIDE1-1"
                                         />
                                     </div>
                                     <div class="col-8 mt-3">
@@ -182,25 +194,17 @@
                                         <label
                                             for="action.symbol"
                                             class="form-label"
-                                            >标志</label
+                                            >Symbol</label
                                         >
                                         <select
                                             class="form-select form-select"
                                             name="action.symbol"
                                             id="action.symbol"
                                         >
-                                            <option value="L#">
-                                                绿色星星+ L
-                                            </option>
-                                            <option value="L_">
-                                                蓝色圆圈+ L
-                                            </option>
-                                            <option value="L&">
-                                                黑色钻石+ L
-                                            </option>
-                                            <option value="La">
-                                                红色钻石+ L
-                                            </option>
+                                            <option value="L#">Green Star with L - Digipeater</option>
+                                            <option value="L_">Blue Circle with L - Station with Wx Data</option>
+                                            <option value="L&">Black Diamond with L - Rx (only) iGate</option>
+                                            <option value="La" selected>Red Diamond with L - Rx+Tx iGate</option>
                                         </select>
                                     </div>
                                     <div
@@ -218,7 +222,7 @@
                                         <label
                                             for="beacon.latitude"
                                             class="form-label"
-                                            >纬度</label
+                                            >Latitude</label
                                         >
                                         <input
                                             type="text"
@@ -232,7 +236,7 @@
                                         <label
                                             for="beacon.longitude"
                                             class="form-label"
-                                            >经度</label
+                                            >Longitude</label
                                         >
                                         <input
                                             type="text"
@@ -246,20 +250,50 @@
                                         <label
                                             for="personalNote"
                                             class="form-label"
-                                            >私人笔记</label
+                                            >Personal Note</label
                                         >
                                         <input
                                             type="text"
                                             name="personalNote"
                                             id="personalNote"
                                             class="form-control"
-                                            placeholder="一些文字."
+                                            placeholder="Describe here your Station"
+                                        />
+                                    </div>
+                                    <div class="col-12 mt-3">
+                                        <div class="form-check form-switch">
+                                            <input
+                                                type="checkbox"
+                                                name="beacon.statusActive"
+                                                id="beacon.statusActive"
+                                                class="form-check-input"
+                                            />
+                                            <label
+                                                for="beacon.statusActive"
+                                                class="form-label"
+                                                >Send Status at each Boot</label
+                                            >
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <label
+                                            for="beacon.statusPacket"
+                                            class="form-label"
+                                            >Status</label
+                                        >
+                                        <input
+                                            type="text"
+                                            name="beacon.statusPacket"
+                                            id="beacon.statusPacket"
+                                            class="form-control"
+                                            placeholder="Custom Status"
+                                            value=""
                                         />
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <hr />
+                        <hr>
 
                         <div class="row my-5 d-flex align-items-top">
                             <div class="col-lg-3 col-sm-12">
@@ -285,10 +319,10 @@
                                             d="M8.5 5.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0"
                                         />
                                     </svg>
-                                    WiFi接入
+                                    WiFi Access
                                 </h5>
                                 <small
-                                    >添加所有要使用的Wi-Fi网络。</small
+                                    >Add all Wi-Fi Networks intended to be used.</small
                                 >
                             </div>
                             <div class="col-lg-9 col-sm-12">
@@ -310,13 +344,35 @@
                                             aria-expanded="false"
                                             aria-controls="add-ap"
                                         >
-                                            添加网络
+                                            Add network
                                         </button>
+                                    </div>
+                                </div>
+                                <div class="col-6 mt-3">
+                                    <label
+                                        for="startupDelay"
+                                        class="form-label"
+                                        >Startup Delay<small>(To Allow Router/Modem to start WiFiAP before connection)</small></label
+                                    >
+                                    <div class="input-group">
+                                        <input
+                                            type="number"
+                                            name="startupDelay"
+                                            id="startupDelay"
+                                            placeholder="0"
+                                            class="form-control"
+                                            step="1"
+                                            min="0"
+                                            max="5"
+                                        />
+                                        <span class="input-group-text"
+                                            >minutes</span
+                                        >
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <hr />
+                        <hr>
 
                         <div class="row my-5 d-flex align-items-top">
                             <div class="col-lg-3 col-sm-12">
@@ -345,7 +401,8 @@
                                     APRS-IS
                                 </h5>
                                 <small
-                                    >输入您的APRS-IS服务器和验证码。</small
+                                    >Enter you APRS-IS server and
+                                    credentials.</small
                                 >
                             </div>
                             <div class="col-lg-9 col-sm-12">
@@ -361,8 +418,8 @@
                                             <label
                                                 for="aprs_is.active"
                                                 class="form-label"
-                                                >启用APRS-IS
-                                                连接</label
+                                                >Enable APRS-IS
+                                                connection</label
                                             >
                                         </div>
                                     </div>
@@ -377,8 +434,8 @@
                                             <label
                                                 for="aprs_is.messagesToRF"
                                                 class="form-label"
-                                                >将APRS-IS消息发送至
-                                                射频</label
+                                                >Gate APRS-IS Messages to
+                                                RF</label
                                             >
                                         </div>
                                     </div>
@@ -393,8 +450,8 @@
                                             <label
                                                 for="aprs_is.objectsToRF"
                                                 class="form-label"
-                                                >将APRS-IS对象导入
-                                                射频</label
+                                                >Gate APRS-IS Objects to
+                                                RF</label
                                             >
                                         </div>
                                     </div>
@@ -402,21 +459,22 @@
                                         <label
                                             for="aprs_is.server"
                                             class="form-label"
-                                            >服务器</label
+                                            >Server</label
                                         >
                                         <input
                                             type="text"
                                             name="aprs_is.server"
                                             id="aprs_is.server"
-                                            placeholder="soam.aprs2.net"
+                                            placeholder="rotate.aprs2.net"
                                             class="form-control"
+                                            value="rotate.aprs2.net"
                                         />
                                     </div>
                                     <div class="col-4">
                                         <label
                                             for="aprs_is.port"
                                             class="form-label"
-                                            >端口</label
+                                            >Port</label
                                         >
                                         <input
                                             type="text"
@@ -424,6 +482,7 @@
                                             id="aprs_is.port"
                                             placeholder="14580"
                                             class="form-control"
+                                            value="14580"
                                         />
                                     </div>
                                 </div>
@@ -432,32 +491,34 @@
                                         <label
                                             for="aprs_is.passcode"
                                             class="form-label"
-                                            >验证码</label
+                                            >Passcode</label
                                         >
                                         <input
                                             type="text"
                                             name="aprs_is.passcode"
                                             id="aprs_is.passcode"
                                             class="form-control"
+                                            value="XYZWV"
                                         />
                                     </div>
                                     <div class="col-4">
                                         <label
                                             for="aprs_is.filter"
                                             class="form-label"
-                                            >过滤器</label
+                                            >Filter</label
                                         >
                                         <input
                                             type="text"
                                             class="form-control"
                                             name="aprs_is.filter"
                                             id="aprs_is.filter"
+                                            value="m/10"
                                         />
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <hr />
+                        <hr>
 
                         <div class="row my-5 d-flex align-items-top">
                             <div class="col-lg-3 col-sm-12">
@@ -474,9 +535,9 @@
                                             d="M3.05 3.05a7 7 0 0 0 0 9.9.5.5 0 0 1-.707.707 8 8 0 0 1 0-11.314.5.5 0 0 1 .707.707m2.122 2.122a4 4 0 0 0 0 5.656.5.5 0 1 1-.708.708 5 5 0 0 1 0-7.072.5.5 0 0 1 .708.708m5.656-.708a.5.5 0 0 1 .708 0 5 5 0 0 1 0 7.072.5.5 0 1 1-.708-.708 4 4 0 0 0 0-5.656.5.5 0 0 1 0-.708m2.122-2.12a.5.5 0 0 1 .707 0 8 8 0 0 1 0 11.313.5.5 0 0 1-.707-.707 7 7 0 0 0 0-9.9.5.5 0 0 1 0-.707zM6 8a2 2 0 1 1 2.5 1.937V15.5a.5.5 0 0 1-1 0V9.937A2 2 0 0 1 6 8"
                                         />
                                     </svg>
-                                    信标
+                                    Beaconing
                                 </h5>
-                                <small>设置APRS信标属性。</small>
+                                <small>Set APRS beacon attributes.</small>
                             </div>
                             <div class="col-lg-9 col-sm-12">
                                 <div class="row">
@@ -491,7 +552,7 @@
                                             <label
                                                 for="beacon.sendViaAPRSIS"
                                                 class="form-label"
-                                                >通过APRS-IS发送信标
+                                                >Send beacon via APRS-IS
                                             </label>
                                         </div>
                                     </div>
@@ -506,36 +567,70 @@
                                             <label
                                                 for="beacon.sendViaRF"
                                                 class="form-label"
-                                                >通过射频发送信标
+                                                >Send beacon via RF
                                             </label>
                                         </div>
                                     </div>
-                                    <div class="col-6 d-grid gap-2">
-                                        <button class="btn btn-primary" id="send-beacon">立即发送信标</button>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-6">
+                                        <button class="btn btn-primary form-control h-100" id="send-beacon">Send beacon now</button>
+                                    </div>
+                                    <div class="col-6">
+                                        <label
+                                            for="beacon.beaconFreq"
+                                            class="form-label">
+                                            <small>(Select LoRa Beacon Frequency)</small>
+                                        </label>
+                                        <select
+                                            class="form-select form-select"
+                                            name="beacon.beaconFreq"
+                                            id="beacon.beaconFreq"
+                                        >
+                                            <option value="0">Beacon on Rx Freq</option>
+                                            <option value="1">Beacon on Tx Freq</option>
+                                        </select>
                                     </div>
                                 </div>
-                                <div class="row mt-4">
-                                    <div class="col-12">
+                                <div class="row mt-3">
+                                    <div class="col-6">
                                         <label
                                             for="beacon.interval"
                                             class="form-label"
-                                            >信标间隔
+                                            >Beacon Interval
                                         </label>
                                         <div class="input-group">
                                             <input
                                                 type="number"
                                                 name="beacon.interval"
                                                 id="beacon.interval"
-                                                placeholder="15"
                                                 class="form-control"
-                                                required=""
+                                                value="15"
+                                                min="10"
                                                 step="1"
-                                                min="15"
+                                                required
                                             />
                                             <span class="input-group-text"
-                                                >分钟
+                                                >minutes
                                             </span>
                                         </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <label
+                                            for="beacon.ambiguityLevel"
+                                            class="form-label"
+                                            >APRS Position Ambiguity</label
+                                        >
+                                        <select
+                                            class="form-select form-select"
+                                            name="beacon.ambiguityLevel"
+                                            id="beacon.ambiguityLevel"
+                                        >
+                                            <option value="0" selected>No Ambiguity</option>
+                                            <option value="1">~110 m forced Ambiguity</option>
+                                            <option value="2">~1.1 km forced Ambiguity</option>
+                                            <option value="3">~11 km forced Ambiguity</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-12 mt-3">
@@ -549,28 +644,13 @@
                                         <label
                                             for="beacon.gpsActive"
                                             class="form-label"
-                                            >发送真实GPS信标 <small>（仅适用于带GPS模块的电路板）</small>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-check form-switch">
-                                        <input
-                                            type="checkbox"
-                                            name="beacon.gpsAmbiguity"
-                                            id="beacon.gpsAmbiguity"
-                                            class="form-check-input"
-                                        />
-                                        <label
-                                            for="beacon.gpsAmbiguity"
-                                            class="form-label"
-                                            >发送具有模糊性的真实GPS信标 <small>（约1公里的随机误差）</small>
+                                            >Send Real-GPS Beacon <small>(Only for Boards with GPS Modules)</small>
                                         </label>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <hr />
+                        <hr>
 
                         <div class="row my-5 d-flex align-items-top">
                             <div class="col-lg-3 col-sm-12">
@@ -587,17 +667,17 @@
                                             d="M3.05 3.05a7 7 0 0 0 0 9.9.5.5 0 0 1-.707.707 8 8 0 0 1 0-11.314.5.5 0 0 1 .707.707m2.122 2.122a4 4 0 0 0 0 5.656.5.5 0 1 1-.708.708 5 5 0 0 1 0-7.072.5.5 0 0 1 .708.708m5.656-.708a.5.5 0 0 1 .708 0 5 5 0 0 1 0 7.072.5.5 0 1 1-.708-.708 4 4 0 0 0 0-5.656.5.5 0 0 1 0-.708m2.122-2.12a.5.5 0 0 1 .707 0 8 8 0 0 1 0 11.313.5.5 0 0 1-.707-.707 7 7 0 0 0 0-9.9.5.5 0 0 1 0-.707zM6 8a2 2 0 1 1 2.5 1.937V15.5a.5.5 0 0 1-1 0V9.937A2 2 0 0 1 6 8"
                                         />
                                     </svg>
-                                    黑名单
+                                    Black List
                                 </h5>
-                                <small>将下列呼号添加到黑名单中（允许使用通配符）</small>
+                                <small>Add Callsigns with space between them to Blacklist (* wildcard allowed)</small>
                             </div>
-                            <div class="col-9 mt-2">
+                            <div class="col-9">
                                 <div class="row">
                                     <div class="col-12">
                                         <label
                                             for="blacklist"
                                             class="form-label"
-                                            >黑名单</label
+                                            >Blacklist</label
                                         >
                                         <input
                                             type="text"
@@ -611,7 +691,7 @@
                                 </div>
                             </div>
                         </div>
-                        <hr />
+                        <hr>
 
                         <div class="row my-5 d-flex align-items-top">
                             <div class="col-lg-3 col-sm-12">
@@ -630,49 +710,67 @@
                                     </svg>
                                     Digipeating
                                 </h5>
-                                <small>定义Digipeater模式</small>
+                                <small>Define the Digipeater mode</small>
                             </div>
-                            <div class="col-9 mt-2">
+                            <div class="col-9">
                                 <div class="row">
                                     <div class="col-12">
                                         <label
                                             for="digi.mode"
                                             class="form-label"
-                                            >中继模式</label
+                                            >Repeater Mode</label
                                         >
                                         <select
                                             class="form-select form-select"
                                             name="digi.mode"
                                             id="digi.mode"
                                         >
-                                            <option value="0">off</option>
-                                            <option value="2">
-                                                WIDE1 (fill-in) Digi
-                                            </option>
-                                            <option value="3">
-                                                WIDE2 (+WIDE1) Digi
-                                            </option>
+                                            <option value="0" selected>OFF</option>
+                                            <option value="2">WIDE1 (fill-in) Digi</option>
+                                            <option value="3">WIDE2 (+WIDE1) Digi</option>
                                         </select>
                                     </div>
-                                    <div class="col-12 mt-5">
+                                    <div class="col-12 mt-3">
+                                        <label
+                                            for="digi.ecoMode"
+                                            class="form-label"
+                                            >Eco Mode
+                                            <small
+                                                >(Requires Digipeating enabled and APRS-IS connection disabled).</small
+                                            ></label
+                                        >
+                                        <select
+                                            class="form-select form-select"
+                                            name="digi.ecoMode"
+                                            id="digi.ecoMode"
+                                        >
+                                            <option value="0" selected>OFF (Normal Mode - WiFiAP and Serial Output enabled)</option>
+                                            <option value="1">Ultra Eco Mode (Sleep till Packet Rx (WiFiAP/WebUI & Display disabled))</option>
+                                            <option value="2">OFF (Normal Mode - WiFiAP disabled but Serial Output still enabled)</option>
+                                        </select>
+                                    </div>                                    
+                                    <div class="col-12 mt-3">
                                         <div class="form-check form-switch">
+                                            <div class="form-text">
+                                                If WiFi/server connection is lost in iGate-only mode, the device switches to Digipeater mode (WIDE1-1) and retries connection every 15 minutes.
+                                            </div>
                                             <input
                                                 type="checkbox"
-                                                name="digi.ecoMode"
-                                                id="digi.ecoMode"
+                                                name="digi.backupDigiMode"
+                                                id="digi.backupDigiMode"
                                                 class="form-check-input"
                                             />
                                             <label
-                                                for="digi.ecoMode"
+                                                for="digi.backupDigiMode"
                                                 class="form-label"
-                                                >Eco 模式<small> 这将禁用WiFi、显示器、LED，并降低低功耗Digipeater的CPU速度。（<strong>警告：</strong>活动意味着没有WebUI配置，因此<strong>只有</strong>为远程数字扬声器激活此功能）</small></label
+                                                >Backup Digipeater Mode</label
                                             >
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <hr />
+                        <hr>
 
                         <div class="row my-5 d-flex align-items-top">
                             <div class="col-lg-3 col-sm-12">
@@ -692,26 +790,11 @@
                                     LoRa
                                 </h5>
                                 <small
-                                    >配置LoRa APRS发送设置。</small
+                                    >Config LoRa APRS Xmitting settings.</small
                                 >
                             </div>
                             <div class="col-lg-9 col-sm-12">
                                 <div class="row">
-                                    <div class="col-6">
-                                        <div class="form-check form-switch">
-                                            <input
-                                                type="checkbox"
-                                                name="lora.txActive"
-                                                id="lora.txActive"
-                                                class="form-check-input"
-                                            />
-                                            <label
-                                                for="lora.txActive"
-                                                class="form-label"
-                                                >启用LoRa TX</label
-                                            >
-                                        </div>
-                                    </div>
                                     <div class="col-6">
                                         <div class="form-check form-switch">
                                             <input
@@ -723,15 +806,49 @@
                                             <label
                                                 for="lora.rxActive"
                                                 class="form-label"
-                                                >启用 LoRa RX</label
+                                                >Enable LoRa RX</label
                                             >
                                         </div>
                                     </div>
                                     <div class="col-6">
+                                        <div class="form-check form-switch">
+                                            <input
+                                                type="checkbox"
+                                                name="lora.txActive"
+                                                id="lora.txActive"
+                                                class="form-check-input"
+                                            />
+                                            <label
+                                                for="lora.txActive"
+                                                class="form-label"
+                                                >Enable LoRa TX</label
+                                            >
+                                        </div>
+                                    </div>
+                                    <div class="col-6 mt-1">
+                                        <label
+                                            for="lora.rxFreq"
+                                            class="form-label">
+                                            Rx Frequency
+                                        </label>
+                                        <div class="input-group">
+                                            <input
+                                                type="text"
+                                                name="lora.rxFreq"
+                                                id="lora.rxFreq"
+                                                placeholder="433775000"
+                                                class="form-control"
+                                            />
+                                            <span class="input-group-text"
+                                                >Hz
+                                            </span>
+                                        </div>
+                                    </div>                                    
+                                    <div class="col-6 mt-1">
                                         <label
                                             for="lora.txFreq"
                                             class="form-label"
-                                            >Tx 频率
+                                            >Tx Frequency
                                         </label>
                                         <div class="input-group">
                                             <input
@@ -755,137 +872,131 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-6 mt-3">
                                         <label
-                                            for="lora.rxFreq"
-                                            class="form-label">
-                                            Rx 频率
-                                        </label>
-                                        <div class="input-group">
-                                            <input
-                                                type="text"
-                                                name="lora.rxFreq"
-                                                id="lora.rxFreq"
-                                                placeholder="433775000"
-                                                class="form-control"
-                                            />
-                                            <span class="input-group-text"
-                                                >Hz
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mt-4">
-                                    <div class="col-12 mb-4">
-                                        <label
-                                            for="action.speed"
+                                            for="lora.rxSpreadingFactor"
                                             class="form-label"
-                                            >预定义速度
+                                            >Rx Spreading Factor
                                         </label>
                                         <select
                                             class="form-select form-select"
-                                            name="action.speed"
-                                            id="action.speed"
-                                        >
-                                            <option value="300">
-                                                BW 125khz CR 4:5 SF 12 (慢速
-                                                标准, 300bps)
-                                            </option>
-                                            <option value="244">
-                                                BW 125khz CR 4:6 SF 12 (244bps)
-                                            </option>
-                                            <option value="209">
-                                                BW 125khz CR 4:7 SF 12 (209bps)
-                                            </option>
-                                            <option value="183">
-                                                BW 125khz CR 4:8 SF 12 (183bps)
-                                            </option>
-                                            <option value="610">
-                                                BW 125khz CR 4:8 SF 10 (610bps)
-                                            </option>
-                                            <option value="1200">
-                                                BW 125khz CR 4:7 SF 9 (快速
-                                                标准, 1200bps)
-                                            </option>
-                                            <option value="">
-                                                自定义
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <div class="col-5">
-                                        <label
-                                            for="lora.signalBandwidth"
-                                            class="form-label"
-                                            >带宽
-                                        </label>
-                                        <div class="input-group">
-                                            <select
-                                                class="form-select form-select"
-                                                name="lora.signalBandwidth"
-                                                id="lora.signalBandwidth"
-                                                required=""
-                                            >
-                                                <option value="125000" selected>
-                                                    125 kHz
-                                                </option>
-                                                <option value="250000">
-                                                    250 kHz
-                                                </option>
-                                                <option value="500000">
-                                                    500 kHz
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-7">
-                                        <label
-                                            for="lora.spreadingFactor"
-                                            class="form-label"
-                                            >扩频因子
-                                        </label>
-                                        <select
-                                            class="form-select form-select"
-                                            name="lora.spreadingFactor"
-                                            id="lora.spreadingFactor"
+                                            name="lora.rxSpreadingFactor"
+                                            id="lora.rxSpreadingFactor"
                                             required=""
                                         >
-                                            <option value="7">
-                                                SF7 - 电池使用率最低
-                                            </option>
+                                            <option value="5">SF5 - Lowest battery usage</option>
+                                            <option value="6">SF6</option>
+                                            <option value="7">SF7</option>
                                             <option value="8">SF8</option>
                                             <option value="9">SF9</option>
                                             <option value="10">SF10</option>
                                             <option value="11">SF11</option>
-                                            <option value="12" selected>
-                                                SF12 - 最高灵敏度
-                                            </option>
+                                            <option value="12" selected>SF12 - Highest sensitivity</option>
                                         </select>
                                     </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-6">
+                                    <div class="col-6 mt-3">
                                         <label
-                                            for="lora.codingRate4"
-                                            class="form-label">
-                                            编码率
+                                            for="lora.txSpreadingFactor"
+                                            class="form-label"
+                                            >Tx Spreading Factor
                                         </label>
                                         <select
                                             class="form-select form-select"
-                                            name="lora.codingRate4"
-                                            id="lora.codingRate4"
+                                            name="lora.txSpreadingFactor"
+                                            id="lora.txSpreadingFactor"
                                             required=""
                                         >
-                                            <option value="5">5</option>
+                                            <option value="5">SF5 - Lowest battery usage</option>
+                                            <option value="6">SF6</option>
+                                            <option value="7">SF7</option>
+                                            <option value="8">SF8</option>
+                                            <option value="9">SF9</option>
+                                            <option value="10">SF10</option>
+                                            <option value="11">SF11</option>
+                                            <option value="12" selected>SF12 - Highest sensitivity</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-6 mt-3">
+                                        <label
+                                            for="lora.rxCodingRate4"
+                                            class="form-label">
+                                            Rx Coding Rate
+                                        </label>
+                                        <select
+                                            class="form-select form-select"
+                                            name="lora.rxCodingRate4"
+                                            id="lora.rxCodingRate4"
+                                            required=""
+                                        >
+                                            <option value="5" selected>5</option>
                                             <option value="6">6</option>
                                             <option value="7">7</option>
                                             <option value="8">8</option>
                                         </select>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-6 mt-3">
+                                        <label
+                                            for="lora.txCodingRate4"
+                                            class="form-label">
+                                            Tx Coding Rate
+                                        </label>
+                                        <select
+                                            class="form-select form-select"
+                                            name="lora.txCodingRate4"
+                                            id="lora.txCodingRate4"
+                                            required=""
+                                        >
+                                            <option value="5" selected>5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                        </select>
+                                    </div>                                    
+                                    <div class="col-6 mt-3">
+                                        <label
+                                            for="lora.rxSignalBandwidth"
+                                            class="form-label"
+                                            >Rx Signal Bandwidth
+                                        </label>
+                                        <div class="input-group">
+                                            <select
+                                                class="form-select form-select"
+                                                name="lora.rxSignalBandwidth"
+                                                id="lora.rxSignalBandwidth"
+                                                required=""
+                                            >   
+                                                <option value="62500">62.5 kHz</option>
+                                                <option value="125000" selected>125 kHz</option>
+                                                <option value="250000">250 kHz</option>
+                                                <option value="500000">500 kHz</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 mt-3">
+                                        <label
+                                            for="lora.txSignalBandwidth"
+                                            class="form-label"
+                                            >Tx Signal Bandwidth
+                                        </label>
+                                        <div class="input-group">
+                                            <select
+                                                class="form-select form-select"
+                                                name="lora.txSignalBandwidth"
+                                                id="lora.txSignalBandwidth"
+                                                required=""
+                                            >   
+                                                <option value="62500">62.5 kHz</option>
+                                                <option value="125000" selected>125 kHz</option>
+                                                <option value="250000">250 kHz</option>
+                                                <option value="500000">500 kHz</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 mt-3">
                                         <label
                                             for="lora.power"
                                             class="form-label">
-                                            功率
+                                            Power
                                         </label>
                                         <div class="input-group">
                                             <input
@@ -903,11 +1014,11 @@
                                                 >dBm</span
                                             >
                                         </div>
-                                    </div>
+                                    </div>                                    
                                 </div>
                             </div>
                         </div>
-                        <hr />
+                        <hr>
 
                         <div class="row my-5 d-flex align-items-top">
                             <div class="col-lg-3 col-sm-12">
@@ -924,9 +1035,9 @@
                                             d="M2.5 13.5A.5.5 0 0 1 3 13h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5M2 2h12s2 0 2 2v6s0 2-2 2H2s-2 0-2-2V4s0-2 2-2"
                                         />
                                     </svg>
-                                    显示
+                                    Display
                                 </h5>
-                                <small>OLED屏幕配置。</small>
+                                <small>OLED screen configuration.</small>
                             </div>
                             <div class="col-lg-9 col-sm-12">
                                 <div class="row">
@@ -941,7 +1052,7 @@
                                             <label
                                                 for="display.alwaysOn"
                                                 class="form-label"
-                                                >始终打开</label
+                                                >Always On</label
                                             >
                                         </div>
                                     </div>
@@ -958,17 +1069,17 @@
                                             <label
                                                 for="display.turn180"
                                                 class="form-label"
-                                                >旋转180度</label
+                                                >Turn 180º</label
                                             >
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row mt-2">
+                                <div class="row mt-1">
                                     <div class="col-6">
                                         <label
                                             for="display.timeout"
                                             class="form-label"
-                                            >显示超时</label
+                                            >Display Timeout</label
                                         >
                                         <div class="input-group">
                                             <input
@@ -976,10 +1087,12 @@
                                                 name="display.timeout"
                                                 id="display.timeout"
                                                 value="4"
+                                                step="1"
+                                                min="2"
                                                 class="form-control"
                                             />
                                             <span class="input-group-text"
-                                                >秒</span
+                                                >seconds</span
                                             >
                                         </div>
                                     </div>
@@ -987,7 +1100,7 @@
                                         <label
                                             for="other.rememberStationTime"
                                             class="form-label"
-                                            >记忆台站时间</label
+                                            >Remember Station Time</label
                                         >
                                         <div class="input-group">
                                             <input
@@ -1001,14 +1114,14 @@
                                                 min="1"
                                             />
                                             <span class="input-group-text"
-                                                >分钟</span
+                                                >minutes</span
                                             >
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <hr />
+                        <hr>
 
                         <div class="row my-5 d-flex align-items-top">
                             <div class="col-lg-3 col-sm-12">
@@ -1028,20 +1141,20 @@
                                             d="M.88 8C-2.427 1.68 4.41-2 7.823 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C11.59-2 18.426 1.68 15.12 8h-2.783l-1.874-4.686a.5.5 0 0 0-.945.049L7.921 8.956 6.464 5.314a.5.5 0 0 0-.88-.091L3.732 8z"
                                         />
                                     </svg>
-                                    电池
+                                    Battery
                                 </h5>
                                 <small>
-                                    电池监测与健康状况
+                                    Battery Monitor & Health
                                     <br>
                                     <br>
-                                    输入引脚上的最大电压为3.3V。
+                                    Max Voltage on input pin is 3.3V.
                                     <br>
                                     <br>
-                                    相应地计算分压器。
+                                    Calculate voltage divider accordingly.
                                 </small>
                             </div>
-                            <div class="col-9 mt-2">
-                                <div class="row mt-2">
+                            <div class="col-9">
+                                <div class="row">
                                     <div class="col-6">
                                         <div class="form-check form-switch">
                                             <input
@@ -1053,7 +1166,7 @@
                                             <label
                                                 for="battery.sendInternalVoltage"
                                                 class="form-label"
-                                                >发送内部电压</label
+                                                >Send Internal Voltage</label
                                             >
                                         </div>
                                         <div class="form-check form-switch">
@@ -1067,10 +1180,10 @@
                                                 for="battery.sendVoltageAsTelemetry"
                                                 class="form-label"
                                                 style="font-style: italic;"
-                                                >（将电压作为遥测数据发送）</label   
+                                                >(Send Voltage As Telemetry)</label   
                                             >
                                         </div>
-                                        <div class="form-check form-switch mt-3">
+                                        <div class="form-check form-switch">
                                             <input
                                                 type="checkbox"
                                                 name="battery.monitorInternalVoltage"
@@ -1080,12 +1193,12 @@
                                             <label
                                                 for="battery.monitorInternalVoltage"
                                                 class="form-label"
-                                                >监控内部电压健康状况</label
+                                                >Monitor Internal Voltage Health</label
                                             >
                                         </div>
                                         <div class="col">
                                             <label for="battery.internalSleepVoltage" class="form-label"
-                                                >内部休眠电压</label
+                                                >Internal Sleep Voltage</label
                                             >
                                             <div class="input-group">
                                                 <input
@@ -1099,7 +1212,7 @@
                                                     max="3.7"
                                                 />
                                                 <span class="input-group-text"
-                                                    >V</span
+                                                    >volts</span
                                                 >
                                             </div>
                                         </div>
@@ -1115,10 +1228,23 @@
                                             <label
                                                 for="battery.sendExternalVoltage"
                                                 class="form-label"
-                                                >发送外部电压</label
+                                                >Send External Voltage</label
                                             >
                                         </div>
-                                        <div class="form-check form-switch mt-5">
+                                        <div class="form-check form-switch">
+                                            <input
+                                                type="checkbox"
+                                                name="battery.useExternalI2CSensor"
+                                                id="battery.useExternalI2CSensor"
+                                                class="form-check-input"
+                                            />
+                                            <label
+                                                for="battery.useExternalI2CSensor"
+                                                class="form-label"
+                                                >Use External I2C Voltage Sensor</label
+                                            >
+                                        </div>
+                                        <div class="form-check form-switch">
                                             <input
                                                 type="checkbox"
                                                 name="battery.monitorExternalVoltage"
@@ -1128,12 +1254,12 @@
                                             <label
                                                 for="battery.monitorExternalVoltage"
                                                 class="form-label"
-                                                >监测外部电压健康状况</label
+                                                >Monitor External Voltage Health</label
                                             >
                                         </div>
                                         <div class="col">
                                             <label for="battery.externalSleepVoltage" class="form-label"
-                                                >外部休眠电压</label
+                                                >External Sleep Voltage</label
                                             >
                                             <div class="input-group">
                                                 <input
@@ -1147,7 +1273,7 @@
                                                     max="24.0"
                                                 />
                                                 <span class="input-group-text"
-                                                    >V</span
+                                                    >volts</span
                                                 >
                                             </div>
                                         </div>
@@ -1162,11 +1288,11 @@
                                             <label
                                                 for="battery.externalVoltagePin"
                                                 class="form-label"
-                                                >外部电压引脚</label
+                                                >External Voltage Pin</label
                                             >
                                         </div>
                                         <div class="col">
-                                            <label for="battery.voltageDividerR1" class="form-label">外部分压器R1</label>
+                                            <label for="battery.voltageDividerR1" class="form-label">External Voltage divider R1</label>
                                             <div class="input-group">
                                                 <input 
                                                     type="number"
@@ -1182,7 +1308,7 @@
                                             </div>
                                         </div>
                                         <div class="col">
-                                            <label for="battery.voltageDividerR2" class="form-label">外部分压器R2</label>
+                                            <label for="battery.voltageDividerR2" class="form-label">External Voltage divider R2</label>
                                             <div class="input-group">
                                                 <input
                                                     type="number"
@@ -1201,7 +1327,7 @@
                                 </div>
                             </div>
                         </div>
-                        <hr />
+                        <hr>
 
                         <div class="row my-5 d-flex align-items-top">
                             <div class="col-lg-3 col-sm-12">
@@ -1218,11 +1344,11 @@
                                             d="M3.05 3.05a7 7 0 0 0 0 9.9.5.5 0 0 1-.707.707 8 8 0 0 1 0-11.314.5.5 0 0 1 .707.707m2.122 2.122a4 4 0 0 0 0 5.656.5.5 0 1 1-.708.708 5 5 0 0 1 0-7.072.5.5 0 0 1 .708.708m5.656-.708a.5.5 0 0 1 .708 0 5 5 0 0 1 0 7.072.5.5 0 1 1-.708-.708 4 4 0 0 0 0-5.656.5.5 0 0 1 0-.708m2.122-2.12a.5.5 0 0 1 .707 0 8 8 0 0 1 0 11.313.5.5 0 0 1-.707-.707 7 7 0 0 0 0-9.9.5.5 0 0 1 0-.707zM6 8a2 2 0 1 1 2.5 1.937V15.5a.5.5 0 0 1-1 0V9.937A2 2 0 0 1 6 8"
                                         />
                                     </svg>
-                                    WX遥测
+                                    WX Telemetry
                                 </h5>
-                                <small>设置Wx遥测</small>
+                                <small>Define Wx telemetry</small>
                             </div>
-                            <div class="col-9 mt-2">
+                            <div class="col-9">
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="form-check form-switch">
@@ -1235,18 +1361,18 @@
                                             <label
                                                 for="wxsensor.active"
                                                 class="form-label"
-                                                ><b>激活Wx遥测</b>
+                                                >Activate Wx Telemetry
                                                 <small
-                                                    >需要BME/BMP280、BME680或Si7021传感器。</small
+                                                    >(Requires a BME/BMP280, BME680 or Si7021 sensor).</small
                                                 ></label
                                             >
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row mt-3">
+                                <div class="row mt-2">
                                     <div class="col-6">
                                         <label for="wxsensor.heightCorrection" class="form-label"
-                                            >高度校正（海平面以上）</label
+                                            >Height Correction (Above Sea-Level)</label
                                         >
                                         <div class="input-group">
                                             <input
@@ -1259,13 +1385,13 @@
                                                 min="0"
                                             />
                                             <span class="input-group-text"
-                                                >M</span
+                                                >meters</span
                                             >
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <label for="wxsensor.temperatureCorrection" class="form-label"
-                                            >温度校正</label
+                                            >Temperature Correction</label
                                         >
                                         <div class="input-group">
                                             <input
@@ -1286,7 +1412,7 @@
                                 </div>
                             </div>
                         </div>
-                        <hr />
+                        <hr>
 
                         <div class="row my-5 d-flex align-items-top">
                             <div class="col-lg-3 col-sm-12">
@@ -1303,33 +1429,52 @@
                                             d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M4.5 9a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zM4 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 1 0-1h4a.5.5 0 0 1 0 1z"
                                         />
                                     </svg>
-                                    系统日志
+                                    Syslog
                                 </h5>
                                 <small
-                                    >通过网络广播系统
-                                    日志</small
+                                    >Broadcast the system log over the
+                                    network.</small
                                 >
                             </div>
                             <div class="col-lg-9 col-sm-12">
-                                <div class="form-check form-switch">
-                                    <input
-                                        type="checkbox"
-                                        name="syslog.active"
-                                        id="syslog.active"
-                                        class="form-check-input"
-                                    />
-                                    <label
-                                        for="syslog.active"
-                                        class="form-label"
-                                        >启用系统日志</label
-                                    >
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-check form-switch">
+                                            <input
+                                                type="checkbox"
+                                                name="syslog.active"
+                                                id="syslog.active"
+                                                class="form-check-input"
+                                            />
+                                            <label
+                                                for="syslog.active"
+                                                class="form-label"
+                                                >Enable syslog</label
+                                            >
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-check form-switch">
+                                            <input
+                                                type="checkbox"
+                                                name="syslog.logBeaconOverTCPIP"
+                                                id="syslog.logBeaconOverTCPIP"
+                                                class="form-check-input"
+                                            />
+                                            <label
+                                                for="syslog.logBeaconOverTCPIP"
+                                                class="form-label"
+                                                >Log Beacon over TCP/IP</label
+                                            >
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col-6">
                                         <label
                                             for="syslog.server"
                                             class="form-label"
-                                            >服务器</label
+                                            >Server</label
                                         >
                                         <input
                                             type="text"
@@ -1337,14 +1482,13 @@
                                             id="syslog.server"
                                             placeholder="lora.link9.net"
                                             class="form-control"
-                                            disabled
                                         />
                                     </div>
                                     <div class="col-6">
                                         <label
                                             for="syslog.port"
                                             class="form-label"
-                                            >端口</label
+                                            >Port</label
                                         >
                                         <input
                                             type="text"
@@ -1352,13 +1496,13 @@
                                             id="syslog.port"
                                             placeholder="1514"
                                             class="form-control"
-                                            disabled
                                         />
                                     </div>
+                                    
                                 </div>
                             </div>
                         </div>
-                        <hr />
+                        <hr>
 
                         <div class="row my-5 d-flex align-items-top">
                             <div class="col-lg-3 col-sm-12">
@@ -1387,30 +1531,12 @@
                                     TNC
                                 </h5>
                                 <small
-                                    >TNC和KISS配置</small
+                                    >TNC and KISS configuration</small
                                 >
                             </div>
                             <div class="col-lg-9 col-sm-12">
                                 <div class="row">
-                                    <div class="col-12">
-                                        <div class="form-check form-switch">
-                                            <div class="form-text">
-                                                服务器将在如下端口可用： <strong>8001</strong>
-                                            </div>
-                                            <input
-                                                type="checkbox"
-                                                name="tnc.enableServer"
-                                                id="tnc.enableServer"
-                                                class="form-check-input"
-                                            />
-                                            <label
-                                                for="tnc.enableServer"
-                                                class="form-label"
-                                                >启用TNC服务器</label
-                                            >
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
+                                    <div class="col-6">
                                         <div class="form-check form-switch">
                                             <input
                                                 type="checkbox"
@@ -1421,11 +1547,28 @@
                                             <label
                                                 for="tnc.enableSerial"
                                                 class="form-label"
-                                                >启用串行KISS</label
+                                                >Enable Serial KISS</label
                                             >
                                         </div>
                                     </div>
-                                    <div class="col-12">
+                                    <div class="col-6">
+                                        <div class="form-check form-switch">
+                                            <input
+                                                type="checkbox"
+                                                name="tnc.enableServer"
+                                                id="tnc.enableServer"
+                                                class="form-check-input"
+                                            />
+                                            <label
+                                                for="tnc.enableServer"
+                                                class="form-label"
+                                                >Enable TNC server <small><strong>(Port 8001)</strong></small></label
+                                            >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">                                    
+                                    <div class="col-6">
                                         <div class="form-check form-switch">
                                             <input
                                                 type="checkbox"
@@ -1436,14 +1579,180 @@
                                             <label
                                                 for="tnc.acceptOwn"
                                                 class="form-label"
-                                                >通过KISS接受自己的帧</label
+                                                >Accept own frames via KISS</label
+                                            >
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-check form-switch">
+                                            <input
+                                                type="checkbox"
+                                                name="tnc.aprsBridgeActive"
+                                                id="tnc.aprsBridgeActive"
+                                                class="form-check-input"
+                                            />
+                                            <label
+                                                for="tnc.aprsBridgeActive"
+                                                class="form-label"
+                                                >Enable APRS Bridge</label
                                             >
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <hr />
+                        <hr>
+
+                        <div class="row my-5 d-flex align-items-top">
+                            <div class="col-lg-3 col-sm-12">
+                                <h5>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="20"
+                                        height="20"
+                                        fill="currentColor"
+                                        class="bi bi-database-fill"
+                                        viewBox="0 0 16 16"
+                                    >
+                                        <path
+                                            d="M3.904 1.777C4.978 1.289 6.427 1 8 1s3.022.289 4.096.777C13.125 2.245 14 2.993 14 4s-.875 1.755-1.904 2.223C11.022 6.711 9.573 7 8 7s-3.022-.289-4.096-.777C2.875 5.755 2 5.007 2 4s.875-1.755 1.904-2.223"
+                                        />
+                                        <path
+                                            d="M2 6.161V7c0 1.007.875 1.755 1.904 2.223C4.978 9.71 6.427 10 8 10s3.022-.289 4.096-.777C13.125 8.755 14 8.007 14 7v-.839c-.457.432-1.004.751-1.49.972C11.278 7.693 9.682 8 8 8s-3.278-.307-4.51-.867c-.486-.22-1.033-.54-1.49-.972"
+                                        />
+                                        <path
+                                            d="M2 9.161V10c0 1.007.875 1.755 1.904 2.223C4.978 12.711 6.427 13 8 13s3.022-.289 4.096-.777C13.125 11.755 14 11.007 14 10v-.839c-.457.432-1.004.751-1.49.972-1.232.56-2.828.867-4.51.867s-3.278-.307-4.51-.867c-.486-.22-1.033-.54-1.49-.972"
+                                        />
+                                        <path
+                                            d="M2 12.161V13c0 1.007.875 1.755 1.904 2.223C4.978 15.711 6.427 16 8 16s3.022-.289 4.096-.777C13.125 14.755 14 14.007 14 13v-.839c-.457.432-1.004.751-1.49.972-1.232.56-2.828.867-4.51.867s-3.278-.307-4.51-.867c-.486-.22-1.033-.54-1.49-.972"
+                                        />
+                                    </svg>
+                                    MQTT
+                                </h5>
+                                <small>Set your MQTT server</small>
+                            </div>
+                            <div class="col-lg-9 col-sm-12">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-check form-switch">
+                                            <input
+                                                type="checkbox"
+                                                name="mqtt.active"
+                                                id="mqtt.active"
+                                                class="form-check-input"
+                                            />
+                                            <label
+                                                for="mqtt.active"
+                                                class="form-label"
+                                                >Enable</label
+                                            >
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-check form-switch">
+                                            <input
+                                                type="checkbox"
+                                                name="mqtt.beaconOverMqtt"
+                                                id="mqtt.beaconOverMqtt"
+                                                class="form-check-input"
+                                            />
+                                            <label
+                                                for="mqtt.beaconOverMqtt"
+                                                class="form-label"
+                                                >Send (also) iGate Beacon</label
+                                            >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-6">
+                                        <label
+                                            for="mqtt.server"
+                                            class="form-label"
+                                            >Server</label
+                                        >
+                                        <div class="input-group">
+                                            <input
+                                                type="text"
+                                                name="mqtt.server"
+                                                id="mqtt.server"
+                                                class="form-control"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <label
+                                            for="mqtt.topic"
+                                            class="form-label"
+                                            >Topic <small>(Default is <strong>aprs-igate</strong>)</small></label
+                                        >
+                                        <div class="input-group">
+                                            <input
+                                                type="text"
+                                                name="mqtt.topic"
+                                                id="mqtt.topic"
+                                                class="form-control"
+                                                placeholder="aprs-igate"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-6">
+                                        <label
+                                            for="mqtt.username"
+                                            class="form-label"
+                                            >Username</label
+                                        >
+                                        <div class="input-group">
+                                            <input
+                                                type="text"
+                                                name="mqtt.username"
+                                                id="mqtt.username"
+                                                class="form-control"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <label
+                                            for="mqtt.password"
+                                            class="form-label"
+                                            >Password</label
+                                        >
+                                        <div class="input-group">
+                                            <input
+                                                type="password"
+                                                name="mqtt.password"
+                                                id="mqtt.password"
+                                                class="form-control"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">                                    
+                                    <div class="col-6">
+                                        <label
+                                            for="mqtt.port"
+                                            class="form-label"
+                                            >Port <small>(Default is <strong>1883</strong>)</small></label
+                                        >
+                                        <div class="input-group">
+                                            <input
+                                                type="number"
+                                                name="mqtt.port"
+                                                id="mqtt.port"
+                                                class="form-control"
+                                                placeholder="1883"
+                                                required=""
+                                                step="1"
+                                                min="0"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
 
                         <div class="row my-5 d-flex align-items-top">
                             <div class="col-lg-3 col-sm-12">
@@ -1463,12 +1772,12 @@
                                             d="M.88 8C-2.427 1.68 4.41-2 7.823 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C11.59-2 18.426 1.68 15.12 8h-2.783l-1.874-4.686a.5.5 0 0 0-.945.049L7.921 8.956 6.464 5.314a.5.5 0 0 0-.88-.091L3.732 8z"
                                         />
                                     </svg>
-                                    重启时间
+                                    Reboot Time
                                 </h5>
                             </div>
-                            <div class="col-9 mt-2">
+                            <div class="col-9">
                                 <div class="row">
-                                    <div class="col-12">
+                                    <div class="col-6">
                                         <div class="form-check form-switch">
                                             <input
                                                 type="checkbox"
@@ -1479,17 +1788,15 @@
                                             <label
                                                 for="other.rebootMode"
                                                 class="form-label"
-                                                >开启自动重新启动</label
+                                                >Reboot Mode Active</label
                                             >
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row mt-3">
                                     <div class="col-6">
                                         <label
                                             for="other.rebootModeTime"
                                             class="form-label"
-                                            >强制重启前的时间</label
+                                            >Time before forced Reboot</label
                                         >                                    
                                         <div class="input-group">
                                             <input
@@ -1503,14 +1810,14 @@
                                                 max="168"
                                             />
                                             <span class="input-group-text"
-                                                >h</span
+                                                >hours</span
                                             >
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <hr />
+                        <hr>
 
                         <div class="row my-5 d-flex align-items-top">
                             <div class="col-lg-3 col-sm-12">
@@ -1536,56 +1843,85 @@
                                             d="M8.5 5.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0"
                                         />
                                     </svg>
-                                    自动开启WiFi AP
+                                    WiFi Auto AP
                                 </h5>
                                 <small
-                                    >将您的密码和WiFi AP超时时间添加到
-                                    自动接入点。自动AP将在以下情况下启动
-                                    没有WiFi连接。超时将
-                                    从启动或断开最后一个客户端开始计数
-                                    。</small
+                                    >WiFi AP will start if there is no WiFi
+                                    connection available. Timeout will count from 
+                                    startup or last client disconnected.</small
                                 >
                             </div>
-                            <div class="col-lg-9 col-sm-12">
-                                <div class="col-12">
-                                    <label
-                                        for="wifi.autoAP.password"
-                                        class="form-label"
-                                        >密码</label
-                                    >
-                                    <input
-                                        type="password"
-                                        name="wifi.autoAP.password"
-                                        id="wifi.autoAP.password"
-                                        class="form-control"
-                                        placeholder="1234567890"
-                                        required=""
-                                    />
+                            <div class="col-9">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-check form-switch">
+                                            <input
+                                                type="checkbox"
+                                                name="wifi.autoAP.enabled"
+                                                id="wifi.autoAP.enabled"
+                                                class="form-check-input"
+                                            />
+                                            <label
+                                                for="wifi.autoAP.enabled"
+                                                class="form-label"
+                                                >Enable Auto AP</label
+                                            >
+                                            <div class="form-text">
+                                                Create WiFi AP when no network is available
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-12 mt-3">
-                                    <label
-                                        for="wifi.autoAP.timeout"
-                                        class="form-label"
-                                        >WiFi AP无法再次搜索可用的WiFi超时时间
-                                        <small>(分钟)</small></label
-                                    >
-                                    <input
-                                        type="number"
-                                        name="wifi.autoAP.timeout"
-                                        id="wifi.autoAP.timeout"
-                                        class="form-control"
-                                        placeholder="10"
-                                        required=""
-                                        step="1"
-                                        min="0"
-                                    />
-                                    <div class="form-text">
-                                        如果不希望WiFi AP停止，请设置为<strong>0</strong>。
+                                <div id="wifi-autoap-config" style="{{wifi.autoAP.enabled ? '' : 'display:none'}}">
+                                    <div class="row mt-3">
+                                        <div class="col-6">
+                                            <label
+                                                for="wifi.autoAP.password"
+                                                class="form-label"
+                                                >Password</label
+                                            >
+                                            <div class="input-group">
+                                                <input
+                                                    type="password"
+                                                    name="wifi.autoAP.password"
+                                                    id="wifi.autoAP.password"
+                                                    class="form-control"
+                                                    placeholder="1234567890"
+                                                    required=""
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <label
+                                                for="wifi.autoAP.timeout"
+                                                class="form-label"
+                                                >WiFiAP timeout (to search again)</label
+                                            >
+                                            <div class="input-group">
+                                                <input
+                                                    type="number"
+                                                    name="wifi.autoAP.timeout"
+                                                    id="wifi.autoAP.timeout"
+                                                    class="form-control"
+                                                    placeholder="10"
+                                                    required=""
+                                                    step="1"
+                                                    min="0"
+                                                />
+                                                <span class="input-group-text"
+                                                    >minutes</span
+                                                >
+                                                <div class="form-text">
+                                                    Set to <strong>0</strong> if you don't
+                                                    want WiFi AP to stop.
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <hr />
+                        <hr>
 
                         <div class="row my-5 d-flex align-items-top">
                             <div class="col-lg-3 col-sm-12">
@@ -1606,36 +1942,38 @@
                                     OTA
                                 </h5>
                                 <small
-                                    >设置您的用户名和密码以允许
-                                    通过无线方式更新固件。</small
+                                    >Set your username and password to allow
+                                    firmware updating over-the-air.</small
                                 >
                             </div>
                             <div class="col-lg-9 col-sm-12">
-                                <div class="col-12">
-                                    <label for="ota.username" class="form-label"
-                                        >用户名</label
-                                    >
-                                    <input
-                                        type="text"
-                                        name="ota.username"
-                                        id="ota.username"
-                                        class="form-control"
-                                    />
-                                </div>
-                                <div class="col-12 mt-3">
-                                    <label for="ota.password" class="form-label"
-                                        >密码</label
-                                    >
-                                    <input
-                                        type="password"
-                                        name="ota.password"
-                                        id="ota.password"
-                                        class="form-control"
-                                    />
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label for="ota.username" class="form-label"
+                                            >Username</label
+                                        >
+                                        <input
+                                            type="text"
+                                            name="ota.username"
+                                            id="ota.username"
+                                            class="form-control"
+                                        />
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="ota.password" class="form-label"
+                                            >Password</label
+                                        >
+                                        <input
+                                            type="password"
+                                            name="ota.password"
+                                            id="ota.password"
+                                            class="form-control"
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <hr />
+                        <hr>
 
                         <div class="row my-5 d-flex align-items-top">
                             <div class="col-lg-3 col-sm-12">
@@ -1653,58 +1991,59 @@
                                             d="M8 0a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 4.095 0 5.555 0 7.318 0 9.366 1.708 11 3.781 11H7.5V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11h4.188C14.502 11 16 9.57 16 7.773c0-1.636-1.242-2.969-2.834-3.194C12.923 1.999 10.69 0 8 0m-.5 14.5V11h1v3.5a.5.5 0 0 1-1 0"
                                         />
                                     </svg>
-                                    管理
+                                    Admin
                                 </h5>
                                 <small
-                                    >设置您的用户名和密码以允许
-                                    访问web界面。</small
+                                    >Set your username and password to allow
+                                    access to the web interface.</small
                                 >
                             </div>
                             <div class="col-lg-9 col-sm-12">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="form-check form-switch">
-                                            <input
-                                                type="checkbox"
-                                                name="webadmin.active"
-                                                id="webadmin.active"
-                                                class="form-check-input"
-                                            />
-                                            <label
-                                                for="webadmin.active"
-                                                class="form-label"
-                                                >Web界面身份验证</label
-                                            >
-                                        </div>
+                                <div class="col-6">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            type="checkbox"
+                                            name="webadmin.active"
+                                            id="webadmin.active"
+                                            class="form-check-input"
+                                        />
+                                        <label
+                                            for="webadmin.active"
+                                            class="form-label"
+                                            >Web interface authentication</label
+                                        >
                                     </div>
                                 </div>
-                                <div class="col-12">
-                                    <label for="webadmin.username" class="form-label"
-                                        >用户名</label
-                                    >
-                                    <input
-                                        type="text"
-                                        name="webadmin.username"
-                                        id="webadmin.username"
-                                        class="form-control"
-                                        value="admin"
-                                        required=""
-                                    />
-                                </div>
-                                <div class="col-12 mt-3">
-                                    <label for="webadmin.password" class="form-label"
-                                        >密码</label
-                                    >
-                                    <input
-                                        type="password"
-                                        name="webadmin.password"
-                                        id="webadmin.password"
-                                        class="form-control"
-                                    />
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label for="webadmin.username" class="form-label"
+                                            >Username</label
+                                        >
+                                        <input
+                                            type="text"
+                                            name="webadmin.username"
+                                            id="webadmin.username"
+                                            class="form-control"
+                                            value="admin"
+                                            required=""
+                                        />
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="webadmin.password" class="form-label"
+                                            >Password</label
+                                        >
+                                        <input
+                                            type="password"
+                                            name="webadmin.password"
+                                            id="webadmin.password"
+                                            class="form-control"
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <hr />
+                        <hr>
+
                         <div class="row my-5 d-flex align-items-top">
                             <div class="col-lg-3 col-sm-12">
                                 <h5>
@@ -1721,10 +2060,10 @@
                                             d="M8 0a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 4.095 0 5.555 0 7.318 0 9.366 1.708 11 3.781 11H7.5V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11h4.188C14.502 11 16 9.57 16 7.773c0-1.636-1.242-2.969-2.834-3.194C12.923 1.999 10.69 0 8 0m-.5 14.5V11h1v3.5a.5.5 0 0 1-1 0"
                                         />
                                     </svg>
-                                    远程管理
+                                    Remote Management
                                 </h5>
                                 <small
-                                    >通过aprs数据包来管理iGate，留空以禁用
+                                    >Manage Station via APRS Messages. Leave empty to disable!
                                 </small>
                             </div>
                             <div class="col-lg-9 col-sm-12">
@@ -1732,7 +2071,7 @@
                                     <label
                                         for="remoteManagement.managers"
                                         class="form-label"
-                                        >管理员的呼号-SSID，以空格分隔，尾部允许使用 * 通配符</label
+                                        >Callsign-SSID of Managers, space separated, trailing * wildcard allowed (ex: AB1CDE-9, AB1CDE*)</label
                                     >
                                     <div class="input-group">
                                         <input
@@ -1740,29 +2079,29 @@
                                             name="remoteManagement.managers"
                                             id="remoteManagement.managers"
                                             class="form-control"
+                                            oninput="this.value = this.value.toUpperCase();"
                                         />
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="form-check form-switch">
-                                            <input
-                                                type="checkbox"
-                                                name="remoteManagement.rfOnly"
-                                                id="remoteManagement.rfOnly"
-                                                class="form-check-input"
-                                            />
-                                            <label
-                                                for="remoteManagement.rfOnly"
-                                                class="form-label"
-                                                >管理人员只能通过 RF（而非 APRS-IS）发出命令</label
-                                            >
-                                        </div>
+                                <div class="col-12 mt-3">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            type="checkbox"
+                                            name="remoteManagement.rfOnly"
+                                            id="remoteManagement.rfOnly"
+                                            class="form-check-input"
+                                        />
+                                        <label
+                                            for="remoteManagement.rfOnly"
+                                            class="form-label"
+                                            >Managers commands only via RF (not APRS-IS)</label
+                                        >
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <hr />
+                        <hr>
+
                         <div class="row my-5 d-flex align-items-top">
                             <div class="col-lg-3 col-sm-12">
                                 <h5>
@@ -1782,121 +2121,52 @@
                                     NTP
                                 </h5>
                                 <small
-                                    >设置您的GMT时区。
+                                    >Set your GMT Time Zone.
                                 </small>
                             </div>
                             <div class="col-lg-9 col-sm-12">
-                                <div class="col-12">
-                                    <label
-                                        for="ntp.gmtCorrection"
-                                        class="form-label"
-                                        >GMT时间校正，以获得准确的当地时间</label
-                                    >
-                                    <div class="input-group">
-                                        <input
-                                            type="number"
-                                            name="ntp.gmtCorrection"
-                                            id="ntp.gmtCorrection"
-                                            placeholder="0"
-                                            class="form-control"
-                                            step="0.25"
-                                            min="-23.75"
-                                            max="23.75"
-                                        />
-                                        <span class="input-group-text"
-                                            >h</span
-                                        >
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <hr />
-
-                        <div class="row my-5 d-flex align-items-top">
-                            <div class="col-lg-3 col-sm-12">
-                                <h5>
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="20"
-                                        height="20"
-                                        fill="currentColor"
-                                        class="bi bi-heart-pulse-fill"
-                                        viewBox="0 0 16 16"
-                                    >
-                                        <path
-                                            d="M1.475 9C2.702 10.84 4.779 12.871 8 15c3.221-2.129 5.298-4.16 6.525-6H12a.5.5 0 0 1-.464-.314l-1.457-3.642-1.598 5.593a.5.5 0 0 1-.945.049L5.889 6.568l-1.473 2.21A.5.5 0 0 1 4 9z"
-                                        />
-                                        <path
-                                            d="M.88 8C-2.427 1.68 4.41-2 7.823 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C11.59-2 18.426 1.68 15.12 8h-2.783l-1.874-4.686a.5.5 0 0 0-.945.049L7.921 8.956 6.464 5.314a.5.5 0 0 0-.88-.091L3.732 8z"
-                                        />
-                                    </svg>
-                                    实验性开关
-                                </h5>
-                                <small>您可以测试新功能<u> 使用风险自负</u></small>
-                            </div>
-                            <div class="col-lg-9 col-sm-12">
                                 <div class="row">
-                                    <div class="col-12">
-                                        <div class="form-check form-switch">
-                                            <div class="form-text">
-                                                当“仅”iGate模式失去WiFi时，它将切换到Digipeater模式，15分钟后检查WiFi是否可用，并返回“仅”iGate模式。
-                                            </div>
-                                            <input
-                                                type="checkbox"
-                                                name="other.backupDigiMode"
-                                                id="other.backupDigiMode"
-                                                class="form-check-input"
-                                            />
-                                            <label
-                                                for="other.backupDigiMode"
-                                                class="form-label"
-                                                >备份Digipeater模式</label
-                                            >
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-check form-switch">
-                                            <div class="form-text">
-                                                WiFi禁用。睡眠模式。最适合太阳能供电的SX126X。
-                                            </div>
-                                            <input
-                                                type="checkbox"
-                                                name="other.lowPowerMode"
-                                                id="other.lowPowerMode"
-                                                class="form-check-input"
-                                            />
-                                            <label
-                                                for="other.lowPowerMode"
-                                                class="form-label"
-                                                >低功耗模式（仅适用于HT-CT62）</label
-                                            >
-                                        </div>
-                                    </div>
-                                    <div class="col-12 mt-3">
+                                    <div class="col-6">
                                         <label
-                                            for="other.lowVoltageCutOff"
+                                            for="ntp.server"
                                             class="form-label"
-                                            >低压切断 <small>（低于特定电压的深度睡眠）</small></label
+                                            >NTP Server hostname</label
                                         >
-                                        <input
-                                            type="text"
-                                            name="other.lowVoltageCutOff"
-                                            id="other.lowVoltageCutOff"
-                                            placeholder="0"
-                                            min="0"
-                                            step="0.01"
-                                            class="form-control"
-                                        />
-                                        <span class="input-group-text"
-                                                >V</span
+                                        <div class="input-group">
+                                            <input
+                                                type="text"
+                                                name="ntp.server"
+                                                id="ntp.server"
+                                                class="form-control"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <label
+                                            for="ntp.gmtCorrection"
+                                            class="form-label"
+                                            >GMT Time Correction Offset</label
                                         >
-                                        <div class="form-text">
-                                            当低于提供的电池电压时，MCU将深度休眠以节省电力。 如果不希望使用此选项，请设置为<strong>0</strong><u> 请先校准您的电压读数</u>
+                                        <div class="input-group">
+                                            <input
+                                                type="number"
+                                                name="ntp.gmtCorrection"
+                                                id="ntp.gmtCorrection"
+                                                placeholder="0"
+                                                class="form-control"
+                                                step="0.25"
+                                                min="-23.75"
+                                                max="23.75"
+                                            />
+                                            <span class="input-group-text"
+                                                >hours</span
+                                            >
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <hr>
                     </div>
                 </main>
                 <footer
@@ -1916,7 +2186,7 @@
                                 d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.408 5.89c.681 0 1.138.47 1.187 1.107h1.147v-.11c-.053-1.187-1.024-2-2.343-2-1.604 0-2.518 1.05-2.518 2.751v.747c0 1.7.906 2.73 2.518 2.73 1.314 0 2.285-.792 2.343-1.939v-.114H6.595c-.049.615-.497 1.05-1.187 1.05-.84 0-1.318-.62-1.318-1.727v-.742c0-1.112.488-1.754 1.318-1.754Zm5.404 0c.68 0 1.138.47 1.186 1.107h1.147v-.11c-.053-1.187-1.024-2-2.342-2-1.604 0-2.518 1.05-2.518 2.751v.747c0 1.7.905 2.73 2.518 2.73 1.314 0 2.285-.792 2.342-1.939v-.114h-1.147c-.048.615-.496 1.05-1.186 1.05-.84 0-1.319-.62-1.319-1.727v-.742c0-1.112.488-1.754 1.319-1.754Z"
                             />
                         </svg>
-                        2023-24
+                        2023-25
                         <b
                             ><a href="https://github.com/richonguzman"
                                 >CA2RXU</a
@@ -1951,35 +2221,12 @@
                             <a
                                 href="https://cd3eap.aguayoki.cl/"
                                 target="_blank"
-                                >CD3EAP</a
+                                >CA3EAP</a
                             ></b
                         >: Settings Page.
                     </p>
-                    <p class="mb-1 small">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
-                            fill="currentColor"
-                            class="bi bi-cc-circle-fill"
-                            viewBox="0 0 16 16"
-                        >
-                            <path
-                                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.408 5.89c.681 0 1.138.47 1.187 1.107h1.147v-.11c-.053-1.187-1.024-2-2.343-2-1.604 0-2.518 1.05-2.518 2.751v.747c0 1.7.906 2.73 2.518 2.73 1.314 0 2.285-.792 2.343-1.939v-.114H6.595c-.049.615-.497 1.05-1.187 1.05-.84 0-1.318-.62-1.318-1.727v-.742c0-1.112.488-1.754 1.318-1.754Zm5.404 0c.68 0 1.138.47 1.186 1.107h1.147v-.11c-.053-1.187-1.024-2-2.342-2-1.604 0-2.518 1.05-2.518 2.751v.747c0 1.7.905 2.73 2.518 2.73 1.314 0 2.285-.792 2.342-1.939v-.114h-1.147c-.048.615-.496 1.05-1.186 1.05-.84 0-1.319-.62-1.319-1.727v-.742c0-1.112.488-1.754 1.319-1.754Z"
-                            />
-                        </svg>
-                        2025
-                        <b
-                            ><a
-                                href="https://yuluoxk.cn/"
-                                target="_blank"
-                                >BG2FFJ</a
-                            >
-                            </b
-                        >: 设置界面中文.
-                    </p>
                     <p class="mt-4 small">
-                        支持项目<br />
+                        Support this project<br />
                         <a
                             href="https://github.com/sponsors/richonguzman"
                             target="_blank"
@@ -2003,13 +2250,13 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">保存设置</h5>
+                        <h5 class="modal-title">Saving settings</h5>
                     </div>
                     <div class="modal-body">
-                        请稍候。。。设置将被保存，LoRa将
-                        重新启动
+                        Please wait... Settings will be saved and LoRa will
+                        reboot
                     </div>
-                    <div class="modal-footer">正在等待连接。。。</div>
+                    <div class="modal-footer">Waiting for connection...</div>
                 </div>
             </div>
         </div>
@@ -2023,7 +2270,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">设置</h5>
+                        <h5 class="modal-title">Settings</h5>
                         <button
                             type="button"
                             class="btn-close"
@@ -2031,14 +2278,14 @@
                             aria-label="Close"
                         ></button>
                     </div>
-                    <div class="modal-body">设置已经保存！</div>
+                    <div class="modal-body">Settings saved!</div>
                     <div class="modal-footer">
                         <button
                             type="button"
                             class="btn btn-secondary"
                             data-bs-dismiss="modal"
                         >
-                            关闭
+                            Close
                         </button>
                     </div>
                 </div>
@@ -2047,7 +2294,7 @@
         <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
             <div id="toast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
                 <div class="toast-header">
-                    <strong class="me-auto">系统消息</strong>
+                    <strong class="me-auto">System Message</strong>
                     <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
                 <div class="toast-body text-center"></div>
