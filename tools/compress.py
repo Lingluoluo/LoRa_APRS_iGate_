@@ -21,13 +21,17 @@ import datetime
 Import("env")
 
 files = [
-  'data_embed/index.html',
+  'data_embed/i18n.js',
   'data_embed/script.js',
   'data_embed/style.css',
   'data_embed/bootstrap.js',
   'data_embed/bootstrap.css',
   'data_embed/favicon.png',
 ]
+
+# These stay raw for i18n runtime
+html_file = 'data_embed/index.html'
+lang_files = ['data_embed/lang_en.json', 'data_embed/lang_zh.json']
 
 string_to_find_str = "String"
 string_to_find_ver = "versionDate"
@@ -40,20 +44,21 @@ with open('src/LoRa_APRS_iGate.cpp', encoding='utf-8') as cpp_file:
       if start > 0 and end > start:
         versionDate = line[start:end]
         break
-       
-for src in files:
-  out = src + ".gz"
-  
-  
-  with open(src, 'rb') as f:
-    content = f.read()
-    
-  if src == 'data_embed/index.html':
+
+# Process HTML separately (no compression for i18n)
+if html_file:
+    with open(html_file, 'rb') as f:
+        html_content = f.read()
     env_vars = env["BOARD"] + "<br>" + ','.join(env["BUILD_FLAGS"]).replace('-Werror -Wall,', '').replace(',-DELEGANTOTA_USE_ASYNC_WEBSERVER=1', '') + "<br>" + "Version date: " + versionDate
     current_date = datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S') + " UTC"
     build_info = f'{env_vars}<br>Build date: {current_date}'.encode()
-    
-    content = content.replace(b'%BUILD_INFO%', build_info)
-      
+    html_content = html_content.replace(b'%BUILD_INFO%', build_info)
+    with open(html_file, 'wb') as f:
+        f.write(html_content)
+
+for src in files:
+  out = src + ".gz"
+  with open(src, 'rb') as f:
+    content = f.read()
   with open(out, 'wb') as f:
     f.write(gzip.compress(content, compresslevel=9))

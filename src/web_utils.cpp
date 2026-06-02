@@ -30,9 +30,21 @@ extern Configuration               Config;
 extern uint32_t                    lastBeaconTx;
 extern std::vector<ReceivedPacket> receivedPackets;
 
-extern const char web_index_html[] asm("_binary_data_embed_index_html_gz_start");
-extern const char web_index_html_end[] asm("_binary_data_embed_index_html_gz_end");
+// Embedded HTML raw (no gzip for i18n)
+extern const char web_index_html[] asm("_binary_data_embed_index_html_start");
+extern const char web_index_html_end[] asm("_binary_data_embed_index_html_end");
 extern const size_t web_index_html_len = web_index_html_end - web_index_html;
+
+// Embedded lang JSON (raw)
+extern const char web_lang_en_json[] asm("_binary_data_embed_lang_en_json_start");
+extern const char web_lang_en_json_end[] asm("_binary_data_embed_lang_en_json_end");
+extern const char web_lang_zh_json[] asm("_binary_data_embed_lang_zh_json_start");
+extern const char web_lang_zh_json_end[] asm("_binary_data_embed_lang_zh_json_end");
+
+// i18n.js (gzipped)
+extern const char web_i18n_js[] asm("_binary_data_embed_i18n_js_gz_start");
+extern const char web_i18n_js_end[] asm("_binary_data_embed_i18n_js_gz_end");
+extern const size_t web_i18n_js_len = web_i18n_js_end - web_i18n_js;
 
 extern const char web_style_css[] asm("_binary_data_embed_style_css_gz_start");
 extern const char web_style_css_end[] asm("_binary_data_embed_style_css_gz_end");
@@ -60,6 +72,64 @@ namespace WEB_Utils {
 
     AsyncWebServer server(80);
 
+    // I18N
+    static std::map<String, String> langEn;
+    static std::map<String, String> langZh;
+    static bool i18nLoaded = false;
+
+    static void loadLangMap(const char* data, size_t len, std::map<String, String>& map) {
+        JsonDocument doc;
+        DeserializationError error = deserializeJson(doc, data, len);
+        if (error) { Serial.print("I18N error: "); Serial.println(error.c_str()); return; }
+        JsonObject obj = doc.as<JsonObject>();
+        for (JsonPair kv : obj) map[kv.key().c_str()] = kv.value().as<String>();
+    }
+
+    static void initI18N() {
+        if (i18nLoaded) return;
+        loadLangMap(web_lang_en_json, web_lang_en_json_end - web_lang_en_json, langEn);
+        loadLangMap(web_lang_zh_json, web_lang_zh_json_end - web_lang_zh_json, langZh);
+        i18nLoaded = true;
+    }
+
+    static String detectLanguage(AsyncWebServerRequest *request) {
+        if (request->hasHeader("Cookie")) {
+            String cookie = request->getHeader("Cookie")->value();
+            int pos = cookie.indexOf("lang=");
+            if (pos >= 0) {
+                String lang = cookie.substring(pos + 5);
+                int semi = lang.indexOf(";");
+                if (semi > 0) lang = lang.substring(0, semi);
+                if (lang == "zh" || lang == "en") return lang;
+            }
+        }
+        if (request->hasHeader("Accept-Language")) {
+            if (request->getHeader("Accept-Language")->value().indexOf("zh") >= 0) return "zh";
+        }
+        return "en";
+    }
+
+    static String translateHtml(const String& html, std::map<String, String>& trans) {
+        String result = html;
+        for (auto& kv : trans) result.replace("%" + kv.first + "%", kv.second);
+        return result;
+    }
+
+    static String generateI18nScript(std::map<String, String>& trans) {
+        String script = "<script>var I18N={";
+        bool first = true;
+        for (auto& kv : trans) {
+            if (!first) script += ",";
+            String escaped = kv.second;
+            escaped.replace("\\", "\\\\");
+            escaped.replace("'", "\\'");
+            script += "'" + kv.first + "':'" + escaped + "'";
+            first = false;
+        }
+        script += "};</script>";
+        return script;
+    }
+
     void handleNotFound(AsyncWebServerRequest *request) {
         AsyncWebServerResponse *response = request->beginResponse(404, "text/plain", "Not found");
         response->addHeader("Cache-Control", "max-age=3600");
@@ -74,8 +144,23 @@ namespace WEB_Utils {
         if(Config.webadmin.active && !request->authenticate(Config.webadmin.username.c_str(), Config.webadmin.password.c_str()))
             return request->requestAuthentication();
 
-        AsyncWebServerResponse *response = request->beginResponse(200, "text/html", (const uint8_t*)web_index_html, web_index_html_len);
+        initI18N();
+        String lang = detectLanguage(request);
+        auto& trans = (lang == "zh") ? langZh : langEn;
+
+        String html = String(web_index_html, web_index_html_len);
+        html.replace("</head>", generateI18nScript(trans) + "\n</head>");
+        html = translateHtml(html, trans);
+
+        AsyncWebServerResponse *response = request->beginResponse(200, "text/html", html);
+        response->addHeader("Cache-Control", "no-cache");
+        request->send(response);
+    }
+
+    void handleI18nJs(AsyncWebServerRequest *request) {
+        AsyncWebServerResponse *response = request->beginResponse(200, "text/javascript", (const uint8_t*)web_i18n_js, web_i18n_js_len);
         response->addHeader("Content-Encoding", "gzip");
+        response->addHeader("Cache-Control", "max-age=3600");
         request->send(response);
     }
 
@@ -366,6 +451,7 @@ namespace WEB_Utils {
     }
 
     void setup() {
+        initI18N();
         if (Config.digi.ecoMode == 0) {
             server.on("/", HTTP_GET, handleHome);
             server.on("/status", HTTP_GET, handleStatus);
@@ -373,6 +459,7 @@ namespace WEB_Utils {
             server.on("/configuration.json", HTTP_GET, handleReadConfiguration);
             server.on("/configuration.json", HTTP_POST, handleWriteConfiguration);
             server.on("/action", HTTP_POST, handleAction);
+            server.on("/i18n.js", HTTP_GET, handleI18nJs);
             server.on("/style.css", HTTP_GET, handleStyle);
             server.on("/script.js", HTTP_GET, handleScript);
             server.on("/bootstrap.css", HTTP_GET, handleBootstrapStyle);
