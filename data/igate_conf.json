@@ -19,7 +19,7 @@
         "sendViaRF": true,
         "beaconFreq": 1,
         "statusActive": false,
-        "statusPacket": "",
+        "statusPacket": "https://yuluoxk.cn/ LoRa APRS iGate",
         "gpsActive": false,
         "ambiguityLevel": 0
     },
